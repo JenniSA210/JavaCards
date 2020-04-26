@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: antiquewhite;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.GoFishController">
+   <children>
+      <Button layoutX="22.0" layoutY="547.0" mnemonicParsing="false" onAction="#newGameBtnClicked" text="New Game" />
+      <Label layoutX="415.0" layoutY="543.0" prefHeight="17.0" prefWidth="105.0" text="High Score: " />
+      <Label layoutX="415.0" layoutY="560.0" text="Your Score: " />
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="6.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="100.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="181.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="262.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="343.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="424.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="504.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="72.0" layoutX="22.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="72.0" fitWidth="105.0" layoutX="28.0" layoutY="206.0" pickOnBounds="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="75.0" layoutX="67.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="72.0" fitWidth="105.0" layoutX="476.0" layoutY="206.0" pickOnBounds="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="102.0" fitWidth="72.0" layoutX="470.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="91.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="176.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="262.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="347.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="433.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="518.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@AceOfClubs.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="16.0" layoutY="495.0" text="Your Cards:" />
+      <Label layoutX="15.0" layoutY="23.0" text="Their Cards:" />
+      <ImageView fitHeight="72.0" fitWidth="105.0" layoutX="246.0" layoutY="236.0" pickOnBounds="true">
+         <image>
+            <Image url="@CardBack.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="251.0" layoutY="155.0" text="Go Fish!!!">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="240.0" layoutY="499.0" text="Do you have a...">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="27.0" layoutY="308.0" text="Your Stacks" />
+      <Label layoutX="474.0" layoutY="308.0" text="Their Stacks" />
+   </children>
+</AnchorPane>
