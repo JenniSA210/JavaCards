@@ -3,11 +3,15 @@
  */
 package application.controller;
 
+import java.util.ArrayList;
+
 import application.controller.JavaCardsController.ScreenModes;
 import application.model.BlackJackGame;
+import application.model.CardImage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -20,6 +24,7 @@ public class BlackJackController {
 	private String userName;
 	private ScreenModes screenMode = ScreenModes.DEFAULT;
 	private BlackJackGame blackJackGame;
+	ArrayList<ImageView> newUserImageViewList;
 	
     @FXML
     private AnchorPane blackJackAnchorPane;
@@ -46,7 +51,10 @@ public class BlackJackController {
     	userHandBottomImg.setImage(blackJackGame.getNewUserCard());
     	// TODO Set bottom dealer card visual to back of card (grey with black border)
     	// Get new dealer card and add on top and offset of bottom dealer card
-    	dealerHandBottomImg.setImage(blackJackGame.getNewDealerCard());
+    	CardImage newDealerCard = blackJackGame.getNewDealerCard();
+    	newDealerCard.setToBackImage();
+    	dealerHandBottomImg.setImage(newDealerCard);
+    	newUserImageViewList = new ArrayList<ImageView>();
     }
     
     @FXML
@@ -60,9 +68,16 @@ public class BlackJackController {
 
     	// Add new ImageView to screen offset from last card added
     	// Should add in location so rank of card is visible
-    	imgNew.setLayoutX(userHandBottomImg.getLayoutX() + 30);
-    	imgNew.setLayoutY(userHandBottomImg.getLayoutY() - 30);
-    	blackJackAnchorPane.getChildren().add(imgNew);
+    	if (newUserImageViewList.isEmpty()) {
+    		imgNew.setLayoutX(userHandBottomImg.getLayoutX() + 30);
+    		imgNew.setLayoutY(userHandBottomImg.getLayoutY() - 30);
+    		newUserImageViewList.add(imgNew);
+    	} else {
+    		imgNew.setLayoutX(newUserImageViewList.get(newUserImageViewList.size()-1).getLayoutX() + 30);
+    		imgNew.setLayoutY(newUserImageViewList.get(newUserImageViewList.size()-1).getLayoutY() - 30); 
+    		newUserImageViewList.add(imgNew);
+    	}
+    	blackJackAnchorPane.getChildren().add(newUserImageViewList.get(newUserImageViewList.size()-1));
     }
 
     @FXML
