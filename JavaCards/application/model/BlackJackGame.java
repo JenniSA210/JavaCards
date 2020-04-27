@@ -74,10 +74,38 @@ public class BlackJackGame {
 	}
 
 	public GameStatus callGame() {
-    	// Check if game won
+    	// Compare current user and dealer scores
+		// Return status
+		
     	// Update score and high score on disk if needed
+		int userCardTotal = 0, dealerCardTotal = 0;
 
-		return checkIfGameWonOrLost();
+		for (int i = 0; i <= lastUserCardUsed; i++) {
+			if (userDeckOfCards[i].rank.equals(CardRank.ACE)) {
+				if (userCardTotal + 11 > 21) userCardTotal++;
+				else userCardTotal += 11;
+			} else {
+				userCardTotal += userDeckOfCards[i].rank.ordinal();
+			}
+		}
+
+		for (int i = 0; i <= lastDealerCardUsed; i++) {
+			if (dealerDeckOfCards[i].rank.equals(CardRank.ACE)) {
+				if (dealerCardTotal + 11 > 21) dealerCardTotal++;
+				else dealerCardTotal += 11;
+			} else {
+				dealerCardTotal += dealerDeckOfCards[i].rank.ordinal();
+			}
+		}
+
+		// Now compare totals
+		if (userCardTotal > 21) return GameStatus.DEALERWON;
+		else if (dealerCardTotal > 21) return GameStatus.USERWON;
+		else if (dealerCardTotal < userCardTotal) return GameStatus.USERWON;
+		else if (userCardTotal < dealerCardTotal) return GameStatus.DEALERWON;
+		else if (userCardTotal == dealerCardTotal) return GameStatus.PUSH;
+
+		return GameStatus.CONTINUE;
 	}
 	
 	/**
