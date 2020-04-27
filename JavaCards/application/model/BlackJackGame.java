@@ -11,6 +11,7 @@ import application.model.Card.CardRank;
 import application.model.Card.CardSuit;
 
 /**
+ * Data Model for Black Jack Game
  * @author Jennifer Ingram UTSA ID drd411
  * @author Kathryn Dyches UTSA ID jlj082
  *
@@ -22,6 +23,10 @@ public class BlackJackGame {
 	int lastDealerCardUsed; // Last card used/played
 	public enum GameStatus { CONTINUE, USERWON, DEALERWON, PUSH }
 	
+	
+	/**
+	 * Constructor for BlackJackGame
+	 */
 	public BlackJackGame() {
 		userDeckOfCards = createShuffledDeckOfCards(); // Create and fill userDeckOfCards
 		dealerDeckOfCards = createShuffledDeckOfCards(); // Create and fill dealerDeckOfCards
@@ -31,6 +36,10 @@ public class BlackJackGame {
 		
 	}
 	
+	/**
+	 * Creates full 52 card deck all randomized 
+	 * @return Card[52] full deck of randomized, non-repeated cards
+	 */
 	private Card[] createShuffledDeckOfCards() {
 		// Create deck from cards based on random numbers from 0-51 (52 cards in deck)
 		Card[] deckOfCards = new Card[52];
@@ -63,16 +72,30 @@ public class BlackJackGame {
 		return deckOfCards;
 	}
 	
+	/**
+	 * Draws a new card from the User Deck and returns image of that card
+	 * Card already has rank and suit from shuffled deck
+	 * @return Returns image of card
+	 */
 	public CardImage getNewUserCard() {
 		lastUserCardUsed++;
 		return userDeckOfCards[lastUserCardUsed].getImage(); // Moves to next card in shuffled deck
 	}
 
+	/**
+	 * Draws a new card from the Dealer Deck and returns image of that card
+	 * Card already has rank and suit from shuffled deck
+	 * @return Returns image of card
+	 */
 	public CardImage getNewDealerCard() {
 		lastDealerCardUsed++;
 		return dealerDeckOfCards[lastDealerCardUsed].getImage(); // Moves to next card in shuffled deck
 	}
 
+	/**
+	 * To be called when user wants cards totaled and game to end
+	 * @return Final Game Status, will not return continue
+	 */
 	public GameStatus callGame() {
     	// Compare current user and dealer scores
 		// Return status
@@ -146,9 +169,13 @@ public class BlackJackGame {
 		return GameStatus.CONTINUE;
 	}
 	
+	/**
+	 * Calculates user score
+	 * @return Total user score
+	 */
 	public int getScore() {
 		// To be called when game is finished
-		// Calculate score
+		// TODO Calculate score
 		return 0;
 	}
 }
