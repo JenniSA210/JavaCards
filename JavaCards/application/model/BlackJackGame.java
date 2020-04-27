@@ -56,7 +56,6 @@ public class BlackJackGame {
 		// 0-12 CLUBS, 13-25 HEARTS, 26-38 SPADES, 39-51 DIAMONDS
 		int index = 0;
 		for (Integer i : randNumberList) {
-			System.out.println(i);
 			if (i < 13) { // 0-12 Clubs
 				deckOfCards[index] = new Card(CardSuit.CLUBS, CardRank.values()[i]);
 			} else if (i < 26) { // 13-25 Hearts
