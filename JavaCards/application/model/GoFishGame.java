@@ -38,8 +38,14 @@ public class GoFishGame {
 		userBooks = 0;
 		dealHand(deckOfCards, cpuHand);
 		cpuBooks = 0;
-		
-		while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
+	}
+	
+	/**
+	 * alternates user and cpu turn while total books < 13.
+	 * then compares cpu and user books to determine a winner.
+	 */
+	public void begin() {
+    	while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
 			//userTurn();
 			isBookCompleted(userHand);
 			//cpuTurn();
@@ -54,7 +60,6 @@ public class GoFishGame {
 		else if(cpuBooks > userBooks) {
 			// give loss message
 		}
-		
 	}
 	
 	/**
