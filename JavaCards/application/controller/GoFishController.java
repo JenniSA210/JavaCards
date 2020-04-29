@@ -79,7 +79,10 @@ public class GoFishController {
     	// Initialize ArrayLists to hold completed user and cpu books
     	userBooks = new ArrayList<ImageView>();
     	cpuBooks = new ArrayList<ImageView>();
-
+    	
+    	
+    	// start game loop
+    	goFishGame.begin();
 	}
     
     /**
