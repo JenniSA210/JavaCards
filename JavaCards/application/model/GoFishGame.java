@@ -18,9 +18,9 @@ import application.model.Card.CardSuit;
  *
  */
 public class GoFishGame {
-	ArrayList<Card> deckOfCards;
-	ArrayList<Card> userHand;
-	ArrayList<Card> cpuHand;
+	private ArrayList<Card> deckOfCards;
+	private ArrayList<Card> userHand;
+	private ArrayList<Card> cpuHand;
 	int userBooks;
 	int cpuBooks;
 	
@@ -59,7 +59,7 @@ public class GoFishGame {
 	 */
 	private ArrayList<Card> createShuffledDeckOfCards() {
 		// Create deck from cards based on random numbers from 0-51 (52 cards in deck)
-		ArrayList<Card> deckOfCards = new ArrayList<Card>;
+		ArrayList<Card> deckOfCards = new ArrayList<Card>();
 		Random rand = new Random();
 		// Note: use LinkedHashSet to maintain insertion order without duplicates
 		Set<Integer> randNumberList = new LinkedHashSet<Integer>();
@@ -98,7 +98,8 @@ public class GoFishGame {
 	
 	void cpuTurn() {
 		// cpu asks for a random card in its hand
-		Card request = cpuHand.get(new Random.nextInt(cpuHand.size));
+		Random rand = new Random();
+		Card request = cpuHand.get(rand.nextInt(cpuHand.size()));
 		if(cpuAskForCard(request) == false) {
 			goFish(cpuHand);
 		}
@@ -137,11 +138,12 @@ public class GoFishGame {
 		}
 	}
 	
-	void dealHand(ArrayList<Card> newDeck) {
+	ArrayList<Card> dealHand(ArrayList<Card> newDeck) {
 		// deal 7 cards from deck to the hand
-		for(i = 0; i < 7; i++) {
+		for(int i = 0; i < 7; i++) {
 			newDeck.add(deckOfCards.remove(0));
 		}
+		return newDeck;
 	}
 	
 	void isBookCompleted(ArrayList<Card> hand) {
