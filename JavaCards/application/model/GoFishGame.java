@@ -108,6 +108,8 @@ public class GoFishGame {
 		// TODO: set request to card clicked on
 		
 		if(userAskForCard(request) == false) { // if unsuccessful
+			Alert alert = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
+			alert.showAndWait();
 			goFish(userHand);
 		}
 	}
@@ -121,7 +123,13 @@ public class GoFishGame {
 		// cpu asks for a random card in its hand
 		Random rand = new Random();
 		Card request = cpuHand.get(rand.nextInt(cpuHand.size()));
+		
+		Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
+		alert.showAndWait();
+		
 		if(cpuAskForCard(request) == false) {
+			Alert alert2 = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
+			alert2.showAndWait();
 			goFish(cpuHand);
 		}
 	}
