@@ -32,16 +32,17 @@ public class GoFishGame {
 	 */
 	public GoFishGame() {
 		deckOfCards = createShuffledDeckOfCards(); // randomize a deck to deal from
+		
 		// deal a hand to each player and set number of completed books to 0
-		userHand = dealHand(deckOfCards);
+		dealHand(deckOfCards, userHand);
 		userBooks = 0;
-		cpuHand = dealHand(deckOfCards);
+		dealHand(deckOfCards, cpuHand);
 		cpuBooks = 0;
 		
 		while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
 			//userTurn();
 			isBookCompleted(userHand);
-			cpuTurn();
+			//cpuTurn();
 			isBookCompleted(cpuHand);
 		}
 		
@@ -58,7 +59,7 @@ public class GoFishGame {
 	
 	/**
 	 * Creates full 52 card deck all randomized 
-	 * @return Card[52] full deck of randomized, non-repeated cards
+	 * @return ArrayList of randomized, non-repeated cards
 	 */
 	private ArrayList<Card> createShuffledDeckOfCards() {
 		// Create deck from cards based on random numbers from 0-51 (52 cards in deck)
@@ -90,16 +91,27 @@ public class GoFishGame {
 		}
 		return deckOfCards;
 	}
+	
+	/**
+	* takes user card request and calls userAskForCard()
+	* if userAskForCard() returns false, call goFish()
+	*/
 	/*
 	void userTurn() {
 		// player chooses card from their deck to ask for
-		Card request; // TODO: set by card clicked on
+		Card request; 
+		// TODO: set request to card clicked on
+		
 		if(userAskForCard(request) == false) { // if unsuccessful
 			goFish(userHand);
 		}
 	}
 	*/
 	
+	/**
+	* takes a random card from cpu deck as request and calls cpuAskForCard()
+	* if cpyAskForCard() returns false, call goFish()
+	*/
 	void cpuTurn() {
 		// cpu asks for a random card in its hand
 		Random rand = new Random();
@@ -109,8 +121,12 @@ public class GoFishGame {
 		}
 	}
 	
-	// TODO method to "ask" for a card
-	// select a card from user deck to ask for
+	/**
+	 * Searches cpu hand for cards that match the rank of a card selected by the user.
+	 * If found, cards are removed from cpu hand and added to user hand.
+	 * @param request, a Card selected by the user
+	 * @return boolean: true if at least one card is taken, false otherwise
+	 */
 	boolean userAskForCard(Card request) {
 		boolean successful = false;
 		for(Card c : cpuHand) {
@@ -122,6 +138,12 @@ public class GoFishGame {
 		return successful;
 	}
 	
+	/**
+	 * Searches user hand for cards that match the rank of a card selected by the cpu.
+	 * If found, cards are removed from user hand and added to cpu hand.
+	 * @param request, a randomly selected Card
+	 * @return boolean: true if at least one card is taken, false otherwise
+	 */
 	boolean cpuAskForCard(Card request) {
 		boolean successful = false;
 		for(Card c : userHand) {
@@ -133,7 +155,12 @@ public class GoFishGame {
 		return successful;
 	}
 	
-	private void goFish(ArrayList<Card> hand) {
+	/**
+	 * If there are still Cards in deckOfCards, the first will be added to a player's hand.
+	 * Otherwise, a message will display and nothing will change.
+	 * @param hand, an ArrayList of Cards that make up the player's hand
+	 */
+	void goFish(ArrayList<Card> hand) {
 		if(deckOfCards.size() > 0) { // if the deck is not empty, take a card
 			hand.add(deckOfCards.remove(0));
 		}
@@ -144,14 +171,24 @@ public class GoFishGame {
 		}
 	}
 	
-	ArrayList<Card> dealHand(ArrayList<Card> newDeck) {
-		// deal 7 cards from deck to the hand
+	/**
+	 * Called at beginning of game.
+	 * Removes 7 Card elements from deckOfCards and adds them to a hand.
+	 * @param deckOfCards, an ArrayList of Cards to remove from
+	 * @param hand, an ArrayList to add Cards to
+	 */
+	void dealHand(ArrayList<Card> deckOfCards, ArrayList<Card> hand) {
+		// deal 7 cards from beginning of deck to the hand
 		for(int i = 0; i < 7; i++) {
-			newDeck.add(deckOfCards.remove(0));
+			hand.add(deckOfCards.remove(0));
 		}
-		return newDeck;
 	}
 	
+	/**
+	 * Checks to see if four cards of the same rank exist in a given deck.
+	 * Will then remove these cards from play.
+	 * @param hand, the hand that is being checked for Cards of the same rank.
+	 */
 	void isBookCompleted(ArrayList<Card> hand) {
 		int count;
 		// for each card in the hand, see how many other cards have the same rank
@@ -175,5 +212,6 @@ public class GoFishGame {
 		}
 	}
 	
+
 
 }
