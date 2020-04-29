@@ -6,10 +6,13 @@ package application.controller;
 import java.util.ArrayList;
 
 import application.controller.JavaCardsController.ScreenModes;
-import application.model.BlackJackGame;
+import application.model.GoFishGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -58,7 +61,7 @@ public class GoFishController {
 
     	// Set all cpu card visuals to back of card (grey with black border)
     	for(ImageView image : newCpuImageViewList) {
-    		image.setToBackImage();
+    		//image.setToBackImage();
     	}
 
     	
