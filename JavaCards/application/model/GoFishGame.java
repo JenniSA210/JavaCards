@@ -37,9 +37,9 @@ public class GoFishGame {
 		
 		while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
 			userTurn();
-			bookCompleted(userHand);
+			isBookCompleted(userHand);
 			cpuTurn();
-			bookCompleted(cpuHand);
+			isBookCompleted(cpuHand);
 		}
 		
 		// compare number of books to determine the winner
@@ -144,7 +144,7 @@ public class GoFishGame {
 		}
 	}
 	
-	void bookCompleted(ArrayList<Card> hand) {
+	void isBookCompleted(ArrayList<Card> hand) {
 		int count;
 		// for each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) {
