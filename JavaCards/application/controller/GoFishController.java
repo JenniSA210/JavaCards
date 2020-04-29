@@ -22,8 +22,8 @@ public class GoFishController {
 	private String userName; // Holds user name from main screen (JavaCards)
 	private ScreenModes screenMode = ScreenModes.DEFAULT; // Holds screen mode from main screen (JavaCards)
 	private GoFishGame goFishGame; // Data model for Go Fish Game
-	ArrayList<ImageView> newUserImageViewList; // Holds dynamically created card ImageViews for User Deck
-	ArrayList<ImageView> newDealerImageViewList; // Holds dynamically created card ImageViews for Dealer Deck
+	ArrayList<ImageView> newUserImageViewList; // Holds dynamically created card ImageViews for user hand
+	ArrayList<ImageView> newCpuImageViewList; // Holds dynamically created card ImageViews for cpu hand
 	
     @FXML
     private AnchorPane goFishAnchorPane; // Main Pane
@@ -32,17 +32,39 @@ public class GoFishController {
     private Button goFishNewGameBtn; // Button to clear screen and start new game
     
     @FXML
-    private Button callGameBtn; // Button to end game on user click
+    ArrayList<ImageView> userBooks; // dynamically created card ImageViews for user's completed books
     
-    // TODO: add user hand as buttons
+    @FXML
+    ArrayList<ImageView> cpuBooks; // dynamically created card ImageViews for cpu's completed books
 
     @FXML
     public void newGameBtnClicked(ActionEvent event) {
     
     }
 
+    /**
+     * Initializes data when FXML is first loaded, and called when New Game button is clicked
+     * @param userName User name entered in Main Screen
+     * @param screenMode Screen mode to use
+     */
     public void initData(String userName, ScreenModes screenMode) {
     	this.userName = userName;
     	this.screenMode = screenMode;
+    	goFishGame = new GoFishGame();
+    	
+    	// Initialize ArrayLists to hold user and cpu hands
+    	newUserImageViewList = new ArrayList<ImageView>();
+    	newCpuImageViewList = new ArrayList<ImageView>();
+
+    	// Set all cpu card visuals to back of card (grey with black border)
+    	for(ImageView image : newCpuImageViewList) {
+    		image.setToBackImage();
+    	}
+
+    	
+    	// Initialize ArrayLists to hold completed user and cpu books
+    	userBooks = new ArrayList<ImageView>();
+    	cpuBooks = new ArrayList<ImageView>();
+
 	}
 }
