@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import application.model.Card.CardRank;
 import application.model.Card.CardSuit;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Data Model for Go Fish Game
@@ -36,7 +39,7 @@ public class GoFishGame {
 		cpuBooks = 0;
 		
 		while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
-			userTurn();
+			//userTurn();
 			isBookCompleted(userHand);
 			cpuTurn();
 			isBookCompleted(cpuHand);
@@ -87,7 +90,7 @@ public class GoFishGame {
 		}
 		return deckOfCards;
 	}
-	
+	/*
 	void userTurn() {
 		// player chooses card from their deck to ask for
 		Card request; // TODO: set by card clicked on
@@ -95,6 +98,7 @@ public class GoFishGame {
 			goFish(userHand);
 		}
 	}
+	*/
 	
 	void cpuTurn() {
 		// cpu asks for a random card in its hand
@@ -134,7 +138,9 @@ public class GoFishGame {
 			hand.add(deckOfCards.remove(0));
 		}
 		else {
-			// TODO: give message that the deck is empty
+			// give message that the deck is empty
+			Alert alert = new Alert(AlertType.INFORMATION, "No cards left to take.", ButtonType.OK);
+			alert.showAndWait();
 		}
 	}
 	
