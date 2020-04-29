@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import application.controller.JavaCardsController.ScreenModes;
 import application.model.GoFishGame;
+import application.model.CardImage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 /**
+ * Controler for Go Fish Game
  * @author Jennifer Ingram UTSA ID drd411
  * @author Kathryn Dyches UTSA ID jlj082
  *
@@ -41,8 +43,15 @@ public class GoFishController {
     ArrayList<ImageView> cpuBooks; // dynamically created card ImageViews for cpu's completed books
 
     @FXML
-    public void newGameBtnClicked(ActionEvent event) {
-    
+    /**
+     * Calls startNewGame() to reinitialize game and screen and re-enables all buttons
+     * @param event Button Click
+     */
+    void newGameBtnClicked(ActionEvent event) {
+    	startNewGame();
+    	// Activate New Card and Call Game Buttons
+    	//newCardBtn.setDisable(false);
+    	//callGameBtn.setDisable(false);
     }
 
     /**
@@ -58,10 +67,12 @@ public class GoFishController {
     	// Initialize ArrayLists to hold user and cpu hands
     	newUserImageViewList = new ArrayList<ImageView>();
     	newCpuImageViewList = new ArrayList<ImageView>();
+    	
+    	// set visuals for player hand
 
     	// Set all cpu card visuals to back of card (grey with black border)
     	for(ImageView image : newCpuImageViewList) {
-    		//image.setToBackImage();
+    		//image.setImage(value);
     	}
 
     	
@@ -70,4 +81,25 @@ public class GoFishController {
     	cpuBooks = new ArrayList<ImageView>();
 
 	}
+    
+    /**
+     * Removes all additional ImageViews from screen, clears ArrayLists, and re-initialize for new game
+     */
+    public void startNewGame() {
+    	// Remove New User Card ImageViews from Anchor Pane and clear ArrayList
+    	for (int i = 0; i < newUserImageViewList.size(); i++)
+        	goFishAnchorPane.getChildren().remove(newUserImageViewList.get(i));
+   		newUserImageViewList.clear();
+    	newUserImageViewList = null;
+
+    	// Remove New Cpu Card ImageViews from Anchor Pane and clear ArrayList
+    	for (int i = 0; i < newCpuImageViewList.size(); i++)
+        	goFishAnchorPane.getChildren().remove(newCpuImageViewList.get(i));
+    	newCpuImageViewList.clear();
+    	newCpuImageViewList = null;
+    	
+    	// Restart game from scratch
+    	goFishGame = null;
+    	this.initData(userName, screenMode);
+    }
 }
