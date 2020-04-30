@@ -10,12 +10,17 @@ import application.model.GoFishGame;
 import application.model.CardImage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 /**
  * Controler for Go Fish Game
@@ -62,6 +67,19 @@ public class GoFishController {
     public void initData(String userName, ScreenModes screenMode) {
     	this.userName = userName;
     	this.screenMode = screenMode;
+    	try {
+    		if (screenMode == ScreenModes.DEFAULT) {
+    			//userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
+    			//userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/darkmode.css").toExternalForm());
+           		// Flaw fixed after Java 1.8 - won't change background using CSS - requires below code to change background
+        		goFishAnchorPane.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+    		} else if (screenMode == ScreenModes.DARKMODE) {
+    			//userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/application.css").toExternalForm());
+    			//userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
+    		}
+    	} catch (Exception e) {
+    		System.out.println(e);
+    	}
     	goFishGame = new GoFishGame();
     	
     	// Initialize ArrayLists to hold user and cpu hands
@@ -82,7 +100,9 @@ public class GoFishController {
     	
     	
     	// start game loop
-    	goFishGame.begin();
+    	System.out.println("go fish start!");
+goFishGame.begin();
+    	System.out.println("go fish end!");
 	}
     
     /**
