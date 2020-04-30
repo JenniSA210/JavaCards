@@ -10,9 +10,11 @@ import java.util.ArrayList;
 
 import application.model.Card.CardRank;
 import application.model.Card.CardSuit;
+import application.model.Score.GameList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import application.model.Score.GameList;
 
 /**
  * Data Model for Go Fish Game
@@ -26,14 +28,28 @@ public class GoFishGame {
 	private ArrayList<Card> cpuHand;
 	int userBooks;
 	int cpuBooks;
+	public int userScore;
+	Score score;
+	int highScore;
+	String userName;
 	
 	/**
 	 * Constructor for GoFishGame
 	 */
-	public GoFishGame() {
+	public GoFishGame(String userName) {
 		deckOfCards = createShuffledDeckOfCards(); // randomize a deck to deal from
 		userHand = new ArrayList<Card>();
 		cpuHand = new ArrayList<Card>();
+		userScore = 0;
+		this.userName = userName;
+		
+		// Load high scores from scores.txt
+		try {
+			score = new Score();
+			highScore = score.getHighScore(GameList.BLACKJACK);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		
 		// deal a hand to each player and set number of completed books to 0
 		dealHand(deckOfCards, userHand);
@@ -54,14 +70,19 @@ public class GoFishGame {
 			userBooks += 1;
 			isBookCompleted(cpuHand);
 		}
-		
+
 		// compare number of books to determine the winner
 		if(userBooks > cpuBooks) {
-			// TODO: if number of books exceeds previous high score, set as new high score
+			userScore += 20;
+	    	score.addScore(GameList.GOFISH, userName, userScore);
+			// if score exceeds previous high score, set as new high score
+
 			Alert alert = new Alert(AlertType.INFORMATION, "You won!", ButtonType.OK);
 			alert.showAndWait();
 		}
 		else if(cpuBooks > userBooks) {
+			userScore += 0;
+	    	score.addScore(GameList.GOFISH, userName, userScore);
 			Alert alert = new Alert(AlertType.INFORMATION, "CPU won!", ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -261,6 +282,21 @@ public class GoFishGame {
 		hand.removeAll(tempList);
 	}
 	
-
+	/**
+	 * Returns user score
+	 * @return Total user score
+	 */
+	public int getScore() {
+		// To be called when game is finished
+		return userScore;
+	}
+	
+	/**
+	 * Returns high score from Score class (disk)
+	 * @return
+	 */
+	public int getHighScore() {
+		return highScore;
+	}
 
 }
