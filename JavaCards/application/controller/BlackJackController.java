@@ -57,6 +57,17 @@ public class BlackJackController {
     public void initData(String userName, ScreenModes screenMode) {
     	this.userName = userName;
     	this.screenMode = screenMode;
+    	try {
+    		if (screenMode == ScreenModes.DEFAULT) {
+    			userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
+    			userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/darkmode.css").toExternalForm());
+    		} else if (screenMode == ScreenModes.DARKMODE) {
+    			userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
+    			userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/application.css").toExternalForm());
+    		}
+    	} catch (Exception e) {
+    		
+    	}
     	blackJackGame = new BlackJackGame();
 
     	// Sets first user card
