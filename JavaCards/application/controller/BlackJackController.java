@@ -11,12 +11,17 @@ import application.model.BlackJackGame.GameStatus;
 import application.model.CardImage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 /**
  * Controller for Black Jack Game
@@ -61,12 +66,14 @@ public class BlackJackController {
     		if (screenMode == ScreenModes.DEFAULT) {
     			userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
     			userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/darkmode.css").toExternalForm());
+           		// Flaw fixed after Java 1.8 - won't change background using CSS - requires below code to change background
+        		blackJackAnchorPane.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     		} else if (screenMode == ScreenModes.DARKMODE) {
-    			userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
     			userHandBottomImg.getParent().getStylesheets().remove(getClass().getResource("..//view/application.css").toExternalForm());
+    			userHandBottomImg.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
     		}
     	} catch (Exception e) {
-    		
+    		System.out.println(e);
     	}
     	blackJackGame = new BlackJackGame();
 
