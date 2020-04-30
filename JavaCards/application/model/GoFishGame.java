@@ -127,6 +127,7 @@ public class GoFishGame {
 		// player chooses card from their deck to ask for
 		Card request; 
 		// TODO: set request to card clicked on
+		// random for testing purposes
 		Random rand = new Random();
 		try {
 			System.out.println("size of userhand: " + userHand.size());
