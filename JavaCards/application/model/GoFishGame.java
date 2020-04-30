@@ -13,6 +13,7 @@ import application.model.Card.CardSuit;
 import application.model.Score.GameList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.control.Alert.AlertType;
 import application.model.Score.GameList;
 
@@ -42,27 +43,78 @@ public class GoFishGame {
 		cpuHand = new ArrayList<Card>();
 		userScore = 0;
 		this.userName = userName;
+
 		
 		// Load high scores from scores.txt
 		try {
 			score = new Score();
-			highScore = score.getHighScore(GameList.BLACKJACK);
+			highScore = score.getHighScore(GameList.GOFISH);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
-		// deal a hand to each player and set number of completed books to 0
+		// deal a hand of seven random cards to each player and set number of completed books to 0
 		dealHand(deckOfCards, userHand);
 		userBooks = 0;
 		dealHand(deckOfCards, cpuHand);
 		cpuBooks = 0;
 	}
 	
+	public ArrayList<Image> getUserHand(){
+		ArrayList<Image> userHandImages = new ArrayList<Image>();
+		for (int i = 0; i < userHand.size(); i++) {
+			userHandImages.add(userHand.get(i).image);
+		}
+		return userHandImages;
+	}
+	
+	public ArrayList<Image> getDealerHand(boolean frontVisible){
+		ArrayList<Image> dealerHandImages = new ArrayList<Image>();
+		for (int i = 0; i < cpuHand.size(); i++) {
+			if (frontVisible) cpuHand.get(i).image.setToFrontImage();
+			else cpuHand.get(i).image.setToBackImage();
+			dealerHandImages.add(cpuHand.get(i).image);
+			
+		}
+		return dealerHandImages;
+	}
+	
+	/**
+	 * When player clicks on a user card, call this method to determine card rank
+	 * and search CPU's cards for a matching card
+	 * and if they do, remove that card from their deck and add to user deck
+     * If not, then pull another card from the deck
+	 * @param cardIndex Index of card clicked on compared to user's hand images
+	 */
+	public void userCardSelect(int cardIndex) {
+		CardRank rank = userHand.get(cardIndex).rank;
+		System.out.println(userHand.get(cardIndex));
+		int i = 0;
+		boolean found = false;
+		// Search CPU hand for matching card, if found transfer to User hand
+		while (i < cpuHand.size() && !found) {
+			if (rank == cpuHand.get(i).rank) {
+				found = true;
+				userHand.add(cpuHand.remove(i));
+				cpuHand.trimToSize();
+			}
+			i++;
+		}
+		if (!found) {
+			// Pull another card from deck
+			userHand.add(deckOfCards.remove(0));
+		}
+		// TODO isBookCompleted should just check if it is completed, modification should be here or other method called
+		if (isBookCompleted(userHand)) {
+			
+		}
+	}
+	
 	/**
 	 * alternates user and cpu turn while total books < 13.
 	 * then compares cpu and user books to determine a winner.
 	 */
-	public void begin() {
+	public void begin() { // TODO This is handled by events instead of driven by a loop, remove
     	while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
 			userTurn();
 			isBookCompleted(userHand);
@@ -70,7 +122,9 @@ public class GoFishGame {
 			userBooks += 1;
 			isBookCompleted(cpuHand);
 		}
-
+    	
+    	
+    	System.out.println("Exited while loop");
 		// compare number of books to determine the winner
 		if(userBooks > cpuBooks) {
 			userScore += 20;
@@ -80,9 +134,7 @@ public class GoFishGame {
 			Alert alert = new Alert(AlertType.INFORMATION, "You won!", ButtonType.OK);
 			alert.showAndWait();
 		}
-		else if(cpuBooks > userBooks) {
-			userScore += 0;
-	    	score.addScore(GameList.GOFISH, userName, userScore);
+		else {
 			Alert alert = new Alert(AlertType.INFORMATION, "CPU won!", ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -106,7 +158,6 @@ public class GoFishGame {
 		
 		// Convert those random numbers to enum ordinals
 		// 0-12 CLUBS, 13-25 HEARTS, 26-38 SPADES, 39-51 DIAMONDS
-		int index = 0;
 		for (Integer i : randNumberList) {
 			if (i < 13) { // 0-12 Clubs
 				deckOfCards.add(new Card(CardSuit.CLUBS, CardRank.values()[i]));
@@ -118,7 +169,6 @@ public class GoFishGame {
 				// 39-51 Diamonds
 				deckOfCards.add(new Card(CardSuit.DIAMONDS, CardRank.values()[i-39]));
 			}
-			index ++;
 		}
 		return deckOfCards;
 	}
@@ -254,7 +304,7 @@ public class GoFishGame {
 	 * Will then remove these cards from play.
 	 * @param hand, the hand that is being checked for Cards of the same rank.
 	 */
-	void isBookCompleted(ArrayList<Card> hand) {
+	boolean isBookCompleted(ArrayList<Card> hand) {
 		int count;
 		// create a temp storage for cards that will be removed
 		ArrayList<Card> tempList = new ArrayList<Card>();
@@ -275,12 +325,15 @@ public class GoFishGame {
 						tempList.add(c2);
 					}
 				}
-				
+
+				hand.removeAll(tempList);
+				userBooks++;
+				return true;
 				// TODO: add graphic for a book of c1.rank cards
 			}
 		}
+		return false;
 		
-		hand.removeAll(tempList);
 	}
 	
 	/**

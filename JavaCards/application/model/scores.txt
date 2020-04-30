@@ -10,3 +10,6 @@ A Scorer
 BLACKJACK
 PlayerOne
 60
+GOFISH
+User
+20
