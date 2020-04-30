@@ -46,7 +46,39 @@ public class GoFishController {
     
     @FXML
     ArrayList<ImageView> cpuBooks; // dynamically created card ImageViews for cpu's completed books
-
+    
+    // user's starting hand
+    @FXML
+    private ImageView userCard1;
+    @FXML
+    private ImageView userCard2;
+    @FXML
+    private ImageView userCard3;
+    @FXML
+    private ImageView userCard4;
+    @FXML
+    private ImageView userCard5;
+    @FXML
+    private ImageView userCard6;
+    @FXML
+    private ImageView userCard7;
+    
+    // cpu's starting hand
+    @FXML
+    private ImageView cpuCard1;
+    @FXML
+    private ImageView cpuCard2;
+    @FXML
+    private ImageView cpuCard3;
+    @FXML
+    private ImageView cpuCard4;
+    @FXML
+    private ImageView cpuCard5;
+    @FXML
+    private ImageView cpuCard6;
+    @FXML
+    private ImageView cpuCard7;
+    
     @FXML
     /**
      * Calls startNewGame() to reinitialize game and screen and re-enables all buttons
@@ -80,28 +112,28 @@ public class GoFishController {
     	} catch (Exception e) {
     		System.out.println(e);
     	}
-    	goFishGame = new GoFishGame();
     	
+       	goFishGame = new GoFishGame();
+
     	// Initialize ArrayLists to hold user and cpu hands
     	newUserImageViewList = new ArrayList<ImageView>();
     	newCpuImageViewList = new ArrayList<ImageView>();
     	
     	// set visuals for player hand
+    	
 
     	// Set all cpu card visuals to back of card (grey with black border)
     	for(ImageView image : newCpuImageViewList) {
     		//image.setImage(value);
     	}
-
     	
     	// Initialize ArrayLists to hold completed user and cpu books
     	userBooks = new ArrayList<ImageView>();
     	cpuBooks = new ArrayList<ImageView>();
     	
-    	
     	// start game loop
     	System.out.println("go fish start!");
-goFishGame.begin();
+    	goFishGame.begin();
     	System.out.println("go fish end!");
 	}
     
