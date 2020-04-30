@@ -9,8 +9,8 @@
    <children>
       <Button fx:id="blackJackNewGameBtn" layoutX="22.0" layoutY="547.0" mnemonicParsing="false" onAction="#newGameBtnClicked" text="New Game" />
       <ImageView fx:id="userHandBottomImg" fitHeight="340.0" fitWidth="240.0" layoutX="109.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="22.0" layoutY="28.0" prefHeight="17.0" prefWidth="105.0" text="High Score: " />
-      <Label layoutX="22.0" layoutY="45.0" text="Your Score: " />
+      <Label fx:id="highScoreLabel" layoutX="22.0" layoutY="28.0" prefHeight="17.0" prefWidth="105.0" text="High Score: 0" />
+      <Label fx:id="userScoreLabel" layoutX="22.0" layoutY="45.0" text="Your Score: 0" />
       <ImageView fitHeight="340.0" fitWidth="240.0" layoutX="160.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@AceOfClubs.png" />

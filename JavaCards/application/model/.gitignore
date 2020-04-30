@@ -5,3 +5,6 @@
 /Card.class
 /CardImage.class
 /GoFishGame.class
+/Score.class
+/PlayerScore.class
+/Score$GameList.class

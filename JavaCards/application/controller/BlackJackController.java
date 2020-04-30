@@ -15,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -54,6 +55,12 @@ public class BlackJackController {
     @FXML
     private ImageView userHandBottomImg; // Bottom card image for user in FXML, used for size and location start
     
+    @FXML
+    private Label userScoreLabel;
+    
+    @FXML
+    private Label highScoreLabel;
+    
     /**
      * Initializes data when FXML is first loaded, and called when New Game button is clicked
      * @param userName User name entered in Main Screen
@@ -75,7 +82,10 @@ public class BlackJackController {
     	} catch (Exception e) {
     		System.out.println(e);
     	}
-    	blackJackGame = new BlackJackGame();
+    	
+    	if (blackJackGame == null) blackJackGame = new BlackJackGame(userName);
+    	
+    	highScoreLabel.setText("High Score: " + blackJackGame.getHighScore());
 
     	// Sets first user card
     	userHandBottomImg.setImage(blackJackGame.getNewUserCard());
@@ -130,7 +140,8 @@ public class BlackJackController {
     	// Check game status and respond accordingly
     	GameStatus status = blackJackGame.checkIfGameWonOrLost();
     	if (status == GameStatus.DEALERWON) {
-    		// TODO Update Score
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     		// Display Dealer Won Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "Dealer won!", ButtonType.OK);
 			alert.showAndWait();
@@ -139,7 +150,8 @@ public class BlackJackController {
 	    	newCardBtn.setDisable(true);
 	    	callGameBtn.setDisable(true);
     	} else if (status == GameStatus.USERWON) {
-    		// TODO Update Score
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     		// Display User Won Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "User won!", ButtonType.OK);
 			alert.showAndWait();
@@ -148,8 +160,9 @@ public class BlackJackController {
 	    	newCardBtn.setDisable(true);
 	    	callGameBtn.setDisable(true);
     	} else if (status == GameStatus.PUSH) {
-    		// TODO Update Score
-    		// Display Puah Alert
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
+    		// Display Push Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "Push!", ButtonType.OK);
 			alert.showAndWait();
 			showDealerCard();
@@ -170,19 +183,22 @@ public class BlackJackController {
     	// If user hand is higher than dealers (but 21 or less), display You Won alert dialog
     	GameStatus status = blackJackGame.callGame();
     	if (status == GameStatus.DEALERWON) {
-    		// TODO Update Score
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     		// Display Dealer Won Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "Dealer won!", ButtonType.OK);
 			alert.showAndWait();
 			showDealerCard();
     	} else if (status == GameStatus.USERWON) {
-    		// TODO Update Score
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     		// Display User Won Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "User won!", ButtonType.OK);
 			alert.showAndWait();
 			showDealerCard();
     	} else if (status == GameStatus.PUSH) {
-    		// TODO Update Score
+    		// Update Score
+    		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     		// Display Puah Alert
 			Alert alert = new Alert(AlertType.INFORMATION, "Push!", ButtonType.OK);
 			alert.showAndWait();
@@ -204,6 +220,7 @@ public class BlackJackController {
      */
     void newGameBtnClicked(ActionEvent event) {
     	startNewGame();
+		userScoreLabel.setText("Your Score: " + blackJackGame.getScore());
     	// Activate New Card and Call Game Buttons
     	newCardBtn.setDisable(false);
     	callGameBtn.setDisable(false);
@@ -262,7 +279,7 @@ public class BlackJackController {
     	newDealerImageViewList = null;
     	
     	// Restart game from scratch
-    	blackJackGame = null;
+    	blackJackGame.restartGame();
     	this.initData(userName, screenMode);
     }
 
