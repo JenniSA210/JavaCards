@@ -48,19 +48,22 @@ public class GoFishGame {
 	 */
 	public void begin() {
     	while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
-			//userTurn();
+			userTurn();
 			isBookCompleted(userHand);
-			//cpuTurn();
+			//userBooks++;
+			cpuTurn();
 			isBookCompleted(cpuHand);
 		}
 		
 		// compare number of books to determine the winner
 		if(userBooks > cpuBooks) {
 			// TODO: if number of books exceeds previous high score, set as new high score
-			// give victory message
+			Alert alert = new Alert(AlertType.INFORMATION, "You won!", ButtonType.OK);
+			alert.showAndWait();
 		}
 		else if(cpuBooks > userBooks) {
-			// give loss message
+			Alert alert = new Alert(AlertType.INFORMATION, "CPU won!", ButtonType.OK);
+			alert.showAndWait();
 		}
 	}
 	
@@ -99,15 +102,12 @@ public class GoFishGame {
 		return deckOfCards;
 	}
 	
-	/**
-	* takes user card request and calls userAskForCard()
-	* if userAskForCard() returns false, call goFish()
-	*/
-	/*
 	void userTurn() {
 		// player chooses card from their deck to ask for
 		Card request; 
 		// TODO: set request to card clicked on
+		Random rand = new Random();
+		request = cpuHand.get(rand.nextInt(cpuHand.size()));
 		
 		if(userAskForCard(request) == false) { // if unsuccessful
 			Alert alert = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
@@ -115,7 +115,7 @@ public class GoFishGame {
 			goFish(userHand);
 		}
 	}
-	*/
+
 	
 	/**
 	* takes a random card from cpu deck as request and calls cpuAskForCard()
@@ -144,12 +144,21 @@ public class GoFishGame {
 	 */
 	boolean userAskForCard(Card request) {
 		boolean successful = false;
+		
+		// create a temp storage for cards that will be removed/added
+		ArrayList<Card> tempList = new ArrayList<Card>();
+		
 		for(Card c : cpuHand) {
 			if(c.rank == request.rank) {
-				userHand.add(cpuHand.remove(cpuHand.indexOf(c)));
+				tempList.add(c);
 				successful = true;
 			}
 		}
+		
+		// remove/add from tempList
+		userHand.addAll(tempList);
+		cpuHand.removeAll(tempList);
+		
 		return successful;
 	}
 	
@@ -161,12 +170,19 @@ public class GoFishGame {
 	 */
 	boolean cpuAskForCard(Card request) {
 		boolean successful = false;
-		for(Card c : userHand) {
+		// create a temp storage for cards that will be removed/added
+		ArrayList<Card> tempList = new ArrayList<Card>();
+			
+		for(Card c : cpuHand) {
 			if(c.rank == request.rank) {
-				cpuHand.add(userHand.remove(userHand.indexOf(c)));
+				tempList.add(c);
 				successful = true;
 			}
 		}
+				
+		// remove/add from tempList
+		userHand.addAll(tempList);
+		cpuHand.removeAll(tempList);
 		return successful;
 	}
 	
@@ -195,9 +211,6 @@ public class GoFishGame {
 	void dealHand(ArrayList<Card> deckOfCards, ArrayList<Card> hand) {
 		// deal 7 cards from beginning of deck to the hand
 		for(int i = 0; i < 7; i++) {
-			System.out.println(deckOfCards);
-			System.out.println(deckOfCards.get(0));
-			System.out.println(hand);
 			hand.add(deckOfCards.remove(0));
 		}
 	}
@@ -209,6 +222,9 @@ public class GoFishGame {
 	 */
 	void isBookCompleted(ArrayList<Card> hand) {
 		int count;
+		// create a temp storage for cards that will be removed
+		ArrayList<Card> tempList = new ArrayList<Card>();
+		
 		// for each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) {
 			count = 1;
@@ -218,13 +234,14 @@ public class GoFishGame {
 				}
 			}
 			if(count == 4) { // if a book has been made
-				// remove all cards with c1.rank
+				// add all cards of the same rank to the templist
+				tempList.add(c1);
 				for(Card c2 : hand) {
 					if(c1.rank == c2.rank) {
-						hand.remove(hand.indexOf(c2));
+						tempList.add(c2);
 					}
 				}
-				hand.remove(hand.indexOf(c1));
+				hand.removeAll(tempList);
 				// TODO: add graphic for a book of c1.rank cards
 			}
 		}
