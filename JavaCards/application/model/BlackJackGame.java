@@ -9,6 +9,7 @@ import java.util.Set;
 
 import application.model.Card.CardRank;
 import application.model.Card.CardSuit;
+import application.model.Score.GameList;
 
 /**
  * Data Model for Black Jack Game
@@ -22,19 +23,37 @@ public class BlackJackGame {
 	int lastUserCardUsed; // Last card used/played
 	int lastDealerCardUsed; // Last card used/played
 	public enum GameStatus { CONTINUE, USERWON, DEALERWON, PUSH }
-	
+	public int userScore;
+	Score score;
+	int highScore;
+	String userName;
 	
 	/**
 	 * Constructor for BlackJackGame
 	 */
-	public BlackJackGame() {
+	public BlackJackGame(String username) {
 		userDeckOfCards = createShuffledDeckOfCards(); // Create and fill userDeckOfCards
 		dealerDeckOfCards = createShuffledDeckOfCards(); // Create and fill dealerDeckOfCards
 		lastUserCardUsed = -1; // getNextUserCard is called and increments to 0
 		lastDealerCardUsed = -1; // getNextDealerCard is called and increments to 0
+		userScore = 0;
+		this.userName = username;
 		// Load high scores from scores.txt
-		
+		try {
+			score = new Score();
+			highScore = score.getHighScore(GameList.BLACKJACK);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
+	
+	public void restartGame() {
+		userDeckOfCards = createShuffledDeckOfCards(); // Create and fill userDeckOfCards
+		dealerDeckOfCards = createShuffledDeckOfCards(); // Create and fill dealerDeckOfCards
+		lastUserCardUsed = -1; // getNextUserCard is called and increments to 0
+		lastDealerCardUsed = -1; // getNextDealerCard is called and increments to 0
+	}
+	
 	
 	/**
 	 * Creates full 52 card deck all randomized 
@@ -122,11 +141,27 @@ public class BlackJackGame {
 
 		// Now compare totals
 		if (userCardTotal > 21) return GameStatus.DEALERWON;
-		else if (dealerCardTotal > 21) return GameStatus.USERWON;
-		else if (dealerCardTotal < userCardTotal) return GameStatus.USERWON;
-		else if (userCardTotal < dealerCardTotal) return GameStatus.DEALERWON;
-		else if (userCardTotal == dealerCardTotal) return GameStatus.PUSH;
-
+		else if (dealerCardTotal > 21) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.USERWON;
+		}
+		else if (dealerCardTotal < userCardTotal) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.USERWON;
+		}
+		else if (userCardTotal < dealerCardTotal) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.DEALERWON;
+		}
+		else if (userCardTotal == dealerCardTotal) {
+			userScore += 10;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.PUSH;
+		}
+		
 		return GameStatus.CONTINUE;
 	}
 	
@@ -161,20 +196,35 @@ public class BlackJackGame {
 		}
 
 		// Now compare totals
-		if (dealerCardTotal > 21) return GameStatus.USERWON;
+		if (dealerCardTotal > 21) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.USERWON;
+		}
 		else if (userCardTotal > 21) return GameStatus.DEALERWON;
-		else if (userCardTotal > 18 && userCardTotal == dealerCardTotal) return GameStatus.PUSH;
+		else if (userCardTotal > 18 && userCardTotal == dealerCardTotal) {
+			userScore += 10;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.PUSH;
+		}
 		
 		return GameStatus.CONTINUE;
 	}
 	
 	/**
-	 * Calculates user score
+	 * Returns user score
 	 * @return Total user score
 	 */
 	public int getScore() {
 		// To be called when game is finished
-		// TODO Calculate score
-		return 0;
+		return userScore;
+	}
+	
+	/**
+	 * Returns high score from Score class (disk)
+	 * @return
+	 */
+	public int getHighScore() {
+		return highScore;
 	}
 }

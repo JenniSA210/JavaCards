@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -102,7 +103,7 @@ public class JavaCardsController {
     }
     
     @FXML
-    void setUserName(ActionEvent event) {
+    void setUserName(KeyEvent e) {
     	userName = tf_name.getText();
     }
     

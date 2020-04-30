@@ -1,0 +1,12 @@
+BLACKJACK
+A Scorer
+1
+BLACKJACK
+Low Scorer
+0
+GOFISH
+A Scorer
+1
+BLACKJACK
+PlayerOne
+60
