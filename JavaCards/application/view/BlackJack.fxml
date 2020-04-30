@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="blackJackAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: antiquewhite;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.BlackJackController">
+<AnchorPane fx:id="blackJackAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.BlackJackController">
    <children>
       <Button fx:id="blackJackNewGameBtn" layoutX="22.0" layoutY="547.0" mnemonicParsing="false" onAction="#newGameBtnClicked" text="New Game" />
       <ImageView fx:id="userHandBottomImg" fitHeight="340.0" fitWidth="240.0" layoutX="109.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />

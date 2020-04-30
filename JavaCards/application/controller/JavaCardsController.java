@@ -1,18 +1,24 @@
 package application.controller;
 
 
+
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 
 
 /**
@@ -58,6 +64,9 @@ public class JavaCardsController {
     	try {
     		rb_default.getParent().getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
     		rb_default.getParent().getStylesheets().remove(getClass().getResource("..//view/darkmode.css").toExternalForm());
+       		// Flaw fixed after Java 1.8 - won't change background using CSS - requires below code to change background
+       		AnchorPane parentPane = (AnchorPane) rb_default.getParent();  
+    		parentPane.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     	} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -74,6 +83,9 @@ public class JavaCardsController {
     	try {
     		rb_dark.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
        		rb_dark.getParent().getStylesheets().remove(getClass().getResource("..//view/application.css").toExternalForm());
+       		// Flaw fixed after Java 1.8 - won't change background using CSS - requires below code to change background
+       		AnchorPane parentPane = (AnchorPane) rb_dark.getParent();  
+    		parentPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
        	 } catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -104,12 +116,14 @@ public class JavaCardsController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("..//view//BlackJack.fxml"));
 			Parent root = loader.load();
 			Scene scene = new Scene(root,600,600);
+			/*
 			if(screenMode == ScreenModes.DEFAULT) {
 				scene.getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
 			}
 			else if(screenMode == ScreenModes.DARKMODE) {
 				scene.getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
 			}
+			*/
 			blackJackStage.initModality(Modality.APPLICATION_MODAL);
 			blackJackStage.setScene(scene);
 			blackJackStage.setTitle("Black Jack");
