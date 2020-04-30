@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import application.controller.JavaCardsController.ScreenModes;
 import application.model.GoFishGame;
+import application.model.BlackJackGame;
 import application.model.CardImage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -46,6 +48,12 @@ public class GoFishController {
     
     @FXML
     ArrayList<ImageView> cpuBooks; // dynamically created card ImageViews for cpu's completed books
+    
+    @FXML
+    private Label userScoreLabel;
+    
+    @FXML
+    private Label highScoreLabel;
     
     // user's starting hand
     @FXML
@@ -112,8 +120,9 @@ public class GoFishController {
     	} catch (Exception e) {
     		System.out.println(e);
     	}
+    	if (goFishGame == null) goFishGame = new GoFishGame(userName);
     	
-       	goFishGame = new GoFishGame();
+    	highScoreLabel.setText("High Score: " + goFishGame.getHighScore());
 
     	// Initialize ArrayLists to hold user and cpu hands
     	newUserImageViewList = new ArrayList<ImageView>();
