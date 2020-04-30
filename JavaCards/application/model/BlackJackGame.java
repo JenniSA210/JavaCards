@@ -1,6 +1,3 @@
-/**
- * 
- */
 package application.model;
 
 import java.util.LinkedHashSet;
@@ -121,26 +118,16 @@ public class BlackJackGame {
     	// Update score and high score on disk if needed
 		int userCardTotal = 0, dealerCardTotal = 0;
 
-		for (int i = 0; i <= lastUserCardUsed; i++) {
-			if (userDeckOfCards[i].rank.equals(CardRank.ACE)) {
-				if (userCardTotal + 11 > 21) userCardTotal++;
-				else userCardTotal += 11;
-			} else {
-				userCardTotal += userDeckOfCards[i].rank.ordinal();
-			}
-		}
-
-		for (int i = 0; i <= lastDealerCardUsed; i++) {
-			if (dealerDeckOfCards[i].rank.equals(CardRank.ACE)) {
-				if (dealerCardTotal + 11 > 21) dealerCardTotal++;
-				else dealerCardTotal += 11;
-			} else {
-				dealerCardTotal += dealerDeckOfCards[i].rank.ordinal();
-			}
-		}
+		userCardTotal = getCardTotal(userDeckOfCards, lastUserCardUsed);
+		dealerCardTotal = getCardTotal(dealerDeckOfCards, lastDealerCardUsed);
 
 		// Now compare totals
 		if (userCardTotal > 21) return GameStatus.DEALERWON;
+		else if (userCardTotal == 21) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.USERWON;
+		}
 		else if (dealerCardTotal > 21) {
 			userScore += 20;
 			score.addScore(GameList.BLACKJACK, userName, userScore);
@@ -152,8 +139,6 @@ public class BlackJackGame {
 			return GameStatus.USERWON;
 		}
 		else if (userCardTotal < dealerCardTotal) {
-			userScore += 20;
-			score.addScore(GameList.BLACKJACK, userName, userScore);
 			return GameStatus.DEALERWON;
 		}
 		else if (userCardTotal == dealerCardTotal) {
@@ -161,7 +146,7 @@ public class BlackJackGame {
 			score.addScore(GameList.BLACKJACK, userName, userScore);
 			return GameStatus.PUSH;
 		}
-		
+
 		return GameStatus.CONTINUE;
 	}
 	
@@ -177,38 +162,84 @@ public class BlackJackGame {
 		// Add special cases for Aces, since they can be value of 1 or 11
 		int userCardTotal = 0, dealerCardTotal = 0;
 
-		for (int i = 0; i <= lastUserCardUsed; i++) {
-			if (userDeckOfCards[i].rank.equals(CardRank.ACE)) {
-				if (userCardTotal + 11 > 21) userCardTotal++;
-				else userCardTotal += 11;
-			} else {
-				userCardTotal += userDeckOfCards[i].rank.ordinal();
-			}
-		}
-
-		for (int i = 0; i <= lastDealerCardUsed; i++) {
-			if (dealerDeckOfCards[i].rank.equals(CardRank.ACE)) {
-				if (dealerCardTotal + 11 > 21) dealerCardTotal++;
-				else dealerCardTotal += 11;
-			} else {
-				dealerCardTotal += dealerDeckOfCards[i].rank.ordinal();
-			}
-		}
+		userCardTotal = getCardTotal(userDeckOfCards, lastUserCardUsed);
+		dealerCardTotal = getCardTotal(dealerDeckOfCards, lastDealerCardUsed);
 
 		// Now compare totals
-		if (dealerCardTotal > 21) {
+		if (userCardTotal == 21) {
+			userScore += 20;
+			score.addScore(GameList.BLACKJACK, userName, userScore);
+			return GameStatus.USERWON;
+		}
+		else if (dealerCardTotal > 21) {
 			userScore += 20;
 			score.addScore(GameList.BLACKJACK, userName, userScore);
 			return GameStatus.USERWON;
 		}
 		else if (userCardTotal > 21) return GameStatus.DEALERWON;
-		else if (userCardTotal > 18 && userCardTotal == dealerCardTotal) {
+		else if (userCardTotal >= 18 && userCardTotal == dealerCardTotal) {
 			userScore += 10;
 			score.addScore(GameList.BLACKJACK, userName, userScore);
 			return GameStatus.PUSH;
 		}
-		
+
+		System.out.println("User Card Total: " + userCardTotal);
 		return GameStatus.CONTINUE;
+	}
+	
+	/**
+	 * Adds an array of cards up to lastCardUsed
+	 * @param userCards True if for user cards, false for dealer cards
+	 * @return Sum of cards
+	 */
+	public int getCardTotal(Card[] deckOfCards, int lastCardUsed) {
+		int cardTotal = 0;
+		
+		for (int i = 0; i <= lastCardUsed; i++) {
+			switch (deckOfCards[i].rank){
+			case ACE:
+				if (cardTotal + 11 > 21) cardTotal++;
+				else cardTotal += 11;
+				break;
+			case TWO: 
+				cardTotal += 2;
+				break;
+			case THREE: 
+				cardTotal += 3;
+				break;
+			case FOUR: 
+				cardTotal += 4;
+				break;
+			case FIVE: 
+				cardTotal += 5;
+				break;
+			case SIX: 
+				cardTotal += 6;
+				break;
+			case SEVEN: 
+				cardTotal += 7;
+				break;
+			case EIGHT: 
+				cardTotal += 8;
+				break;
+			case NINE: 
+				cardTotal += 9;
+				break;
+			case TEN: 
+				cardTotal += 10;
+				break;
+			case JACK: 
+				cardTotal += 10;
+				break;
+			case QUEEN: 
+				cardTotal += 10;
+				break;
+			case KING: 
+				cardTotal += 10;
+				break;
+			}
+		}
+		return cardTotal;
 	}
 	
 	/**
