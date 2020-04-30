@@ -195,9 +195,6 @@ public class GoFishGame {
 	void dealHand(ArrayList<Card> deckOfCards, ArrayList<Card> hand) {
 		// deal 7 cards from beginning of deck to the hand
 		for(int i = 0; i < 7; i++) {
-			System.out.println(deckOfCards);
-			System.out.println(deckOfCards.get(0));
-			System.out.println(hand);
 			hand.add(deckOfCards.remove(0));
 		}
 	}
