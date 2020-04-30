@@ -54,17 +54,11 @@ public class JavaCardsController {
      */
     void rb_defaultClicked(ActionEvent event) {
     	screenMode = ScreenModes.DEFAULT;
-    	// TODO: Write code to change screen colors and refresh screen
+    	// Write code to change screen colors and refresh screen
     	try {
-			Stage newStage = new Stage();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/JavaCards.fxml"));
-			AnchorPane root = (AnchorPane)loader.load();
-			Scene scene = new Scene(root,547,410);
-			scene.getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
-			newStage.setScene(scene);
-			newStage.setTitle("Java Cards");
-			newStage.show();
-		} catch(Exception e) {
+    		rb_default.getParent().getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
+    		rb_default.getParent().getStylesheets().remove(getClass().getResource("..//view/darkmode.css").toExternalForm());
+    	} catch(Exception e) {
 			e.printStackTrace();
 		}
     }
@@ -76,17 +70,11 @@ public class JavaCardsController {
      */
     void rb_darkClicked(ActionEvent event) {
     	screenMode = ScreenModes.DARKMODE;
-    	// TODO: Write code to change screen colors and refresh screen
+    	// Write code to change screen colors and refresh screen
     	try {
-			Stage newStage = new Stage();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/JavaCards.fxml"));
-			AnchorPane root = (AnchorPane)loader.load();
-			Scene scene = new Scene(root,547,410);
-			scene.getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
-			newStage.setScene(scene);
-			newStage.setTitle("Java Cards");
-			newStage.show();
-		} catch(Exception e) {
+    		rb_dark.getParent().getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
+       		rb_dark.getParent().getStylesheets().remove(getClass().getResource("..//view/application.css").toExternalForm());
+       	 } catch(Exception e) {
 			e.printStackTrace();
 		}
     }
