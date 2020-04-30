@@ -1,6 +1,3 @@
-/**
- * 
- */
 package application.model;
 
 import java.util.LinkedHashSet;
