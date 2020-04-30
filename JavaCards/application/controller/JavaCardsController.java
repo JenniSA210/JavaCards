@@ -116,14 +116,12 @@ public class JavaCardsController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("..//view//BlackJack.fxml"));
 			Parent root = loader.load();
 			Scene scene = new Scene(root,600,600);
-			/*
 			if(screenMode == ScreenModes.DEFAULT) {
 				scene.getStylesheets().add(getClass().getResource("..//view/application.css").toExternalForm());
 			}
 			else if(screenMode == ScreenModes.DARKMODE) {
 				scene.getStylesheets().add(getClass().getResource("..//view/darkmode.css").toExternalForm());
 			}
-			*/
 			blackJackStage.initModality(Modality.APPLICATION_MODAL);
 			blackJackStage.setScene(scene);
 			blackJackStage.setTitle("Black Jack");
