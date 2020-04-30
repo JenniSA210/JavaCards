@@ -32,6 +32,8 @@ public class GoFishGame {
 	 */
 	public GoFishGame() {
 		deckOfCards = createShuffledDeckOfCards(); // randomize a deck to deal from
+		userHand = new ArrayList<Card>();
+		cpuHand = new ArrayList<Card>();
 		
 		// deal a hand to each player and set number of completed books to 0
 		dealHand(deckOfCards, userHand);
@@ -193,6 +195,9 @@ public class GoFishGame {
 	void dealHand(ArrayList<Card> deckOfCards, ArrayList<Card> hand) {
 		// deal 7 cards from beginning of deck to the hand
 		for(int i = 0; i < 7; i++) {
+			System.out.println(deckOfCards);
+			System.out.println(deckOfCards.get(0));
+			System.out.println(hand);
 			hand.add(deckOfCards.remove(0));
 		}
 	}
