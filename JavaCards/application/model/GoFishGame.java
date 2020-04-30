@@ -50,8 +50,8 @@ public class GoFishGame {
     	while(userBooks + cpuBooks < 13) { // loop turns until all 13 books are completed
 			userTurn();
 			isBookCompleted(userHand);
-			//userBooks++;
 			cpuTurn();
+			userBooks += 1;
 			isBookCompleted(cpuHand);
 		}
 		
@@ -107,12 +107,19 @@ public class GoFishGame {
 		Card request; 
 		// TODO: set request to card clicked on
 		Random rand = new Random();
-		request = cpuHand.get(rand.nextInt(cpuHand.size()));
-		
-		if(userAskForCard(request) == false) { // if unsuccessful
-			Alert alert = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
+		try {
+			System.out.println("size of userhand: " + userHand.size());
+			request = cpuHand.get(rand.nextInt(userHand.size() - 1));
+			Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
 			alert.showAndWait();
-			goFish(userHand);
+			
+			if(cpuAskForCard(request) == false) {
+				Alert alert2 = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
+				alert2.showAndWait();
+				goFish(cpuHand);
+			}
+		} catch(IllegalArgumentException e) {
+			System.out.println("error caught in user turn");
 		}
 	}
 
@@ -124,16 +131,21 @@ public class GoFishGame {
 	void cpuTurn() {
 		// cpu asks for a random card in its hand
 		Random rand = new Random();
-		Card request = cpuHand.get(rand.nextInt(cpuHand.size()));
-		
-		Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
-		alert.showAndWait();
-		
-		if(cpuAskForCard(request) == false) {
-			Alert alert2 = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
-			alert2.showAndWait();
-			goFish(cpuHand);
+		try {
+			System.out.println("size of cpuhand: " + cpuHand.size());
+			Card request = cpuHand.get(rand.nextInt(cpuHand.size() - 1));
+			Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
+			alert.showAndWait();
+			
+			if(cpuAskForCard(request) == false) {
+				Alert alert2 = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
+				alert2.showAndWait();
+				goFish(cpuHand);
+			}
+		} catch(IllegalArgumentException e) {
+			System.out.println("error caught in cpu turn");
 		}
+
 	}
 	
 	/**
@@ -241,10 +253,12 @@ public class GoFishGame {
 						tempList.add(c2);
 					}
 				}
-				hand.removeAll(tempList);
+				
 				// TODO: add graphic for a book of c1.rank cards
 			}
 		}
+		
+		hand.removeAll(tempList);
 	}
 	
 
