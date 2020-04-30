@@ -10,8 +10,8 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.GoFishController">
    <children>
       <Button layoutX="22.0" layoutY="547.0" mnemonicParsing="false" onAction="#newGameBtnClicked" text="New Game" />
-      <Label layoutX="415.0" layoutY="543.0" prefHeight="17.0" prefWidth="105.0" text="High Score: " />
-      <Label layoutX="415.0" layoutY="560.0" text="Your Score: " />
+      <Label fx:id="highScoreLabel" layoutX="415.0" layoutY="543.0" prefHeight="17.0" prefWidth="105.0" text="High Score: " />
+      <Label fx:id="userScoreLabel" layoutX="415.0" layoutY="560.0" text="Your Score: " />
       <ImageView fitHeight="115.0" fitWidth="84.0" layoutX="6.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@AceOfClubs.png" />
