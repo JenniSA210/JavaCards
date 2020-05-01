@@ -151,17 +151,18 @@ public class GoFishGame {
 			
 			// check if removing the book has emptied user's hand
 			if(checkIfHandEmpty(userHand)) {
-				if(checkIfDeckEmpty() == false)
+				if(checkIfDeckEmpty() == true)
 					userHand.add(deckOfCards.remove(0));
 			}
 		}
 		
 		// check if removing cards has emptied cpu's hand
 		if(checkIfHandEmpty(cpuHand)) {
-			if(checkIfDeckEmpty() == false)
-				userHand.add(deckOfCards.remove(0));
+			if(checkIfDeckEmpty() == true)
+				cpuHand.add(deckOfCards.remove(0));
 		}
 		
+		cpuTurn();	
 	}
 	
 	/**
@@ -206,17 +207,38 @@ public class GoFishGame {
 		Random rand = new Random();
 		try {
 			System.out.println("size of cpuhand: " + cpuHand.size());
-			Card request = cpuHand.get(rand.nextInt(cpuHand.size() - 1));
+			Card request = cpuHand.get(rand.nextInt(cpuHand.size()));
 			Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
 			alert.showAndWait();
 			
 			if(cpuAskForCard(request) == false) {
-				Alert alert2 = new Alert(AlertType.INFORMATION, "Go fish!!!", ButtonType.OK);
-				alert2.showAndWait();
-				//goFish(cpuHand);
+				if(checkIfDeckEmpty() == false)
+					cpuHand.add(deckOfCards.remove(0));
 			}
 		} catch(IllegalArgumentException e) {
 			System.out.println("error caught in cpu turn");
+		}
+		
+		if(isBookCompleted(cpuHand)) {
+			removeBookFromHand(cpuHand, cpuBooks);
+			
+			// check if adding book has ended the game
+			if(userBooks.size() + cpuBooks.size() == 13) {
+				// TODO: write function to end the game and determine a winner
+				System.out.println("game has ended");
+			}
+			
+			// check if removing the book has emptied user's hand
+			if(checkIfHandEmpty(cpuHand)) {
+				if(checkIfDeckEmpty() == true)
+					cpuHand.add(deckOfCards.remove(0));
+			}
+		}
+		
+		// check if removing cards has emptied user's hand
+		if(checkIfHandEmpty(userHand)) {
+			if(checkIfDeckEmpty() == true)
+				userHand.add(deckOfCards.remove(0));
 		}
 
 	}
@@ -232,7 +254,7 @@ public class GoFishGame {
 		// create a temp storage for cards that will be removed/added
 		ArrayList<Card> tempList = new ArrayList<Card>();
 			
-		for(Card c : cpuHand) {
+		for(Card c : userHand) {
 			if(c.rank == request.rank) {
 				tempList.add(c);
 				successful = true;
@@ -240,8 +262,8 @@ public class GoFishGame {
 		}
 				
 		// remove/add from tempList
-		userHand.addAll(tempList);
-		cpuHand.removeAll(tempList);
+		cpuHand.addAll(tempList);
+		userHand.removeAll(tempList);
 		return successful;
 	}
 
@@ -265,8 +287,7 @@ public class GoFishGame {
 	 */
 	boolean isBookCompleted(ArrayList<Card> hand) {
 		int count;
-
-		
+	
 		// for each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) {
 			count = 1;
