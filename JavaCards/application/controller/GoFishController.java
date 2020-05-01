@@ -27,6 +27,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import application.model.Card.CardRank;
 
 /**
  * Controler for Go Fish Game
@@ -40,6 +41,8 @@ public class GoFishController {
 	private GoFishGame goFishGame; // Data model for Go Fish Game
 	ArrayList<ImageView> newUserImageViewList; // Holds dynamically created card ImageViews for user hand
 	ArrayList<ImageView> newDealerImageViewList; // Holds dynamically created card ImageViews for cpu hand
+	ArrayList<ImageView> newUserBookImageViewList; // Holds dynamically created card ImageViews for user hand
+	ArrayList<ImageView> newDealerBookImageViewList; // Holds dynamically created card ImageViews for cpu hand
 	
     @FXML
     private AnchorPane goFishAnchorPane; // Main Pane
@@ -66,6 +69,14 @@ public class GoFishController {
     // CPU's starting card
     @FXML
     private ImageView dealerLeftCard;
+    
+    // User's starting book - stacks are offset to the right
+    @FXML
+    private ImageView userLeftBook;
+    
+    // CPU's starting book - stacks are offset to the left
+    @FXML
+    private ImageView dealerRightBook;
 
     
     @FXML
@@ -75,9 +86,6 @@ public class GoFishController {
      */
     void newGameBtnClicked(ActionEvent event) {
     	startNewGame();
-    	// Activate New Card and Call Game Buttons
-    	//newCardBtn.setDisable(false);
-    	//callGameBtn.setDisable(false);
     }
 
     /**
@@ -113,6 +121,10 @@ public class GoFishController {
     	// Initialize empty ArrayLists to hold user and cpu hands
     	newUserImageViewList = new ArrayList<ImageView>();
     	newDealerImageViewList = new ArrayList<ImageView>();
+    	
+    	// Initialize empty ArrayLists to hold user and cpu hands
+    	newUserBookImageViewList = new ArrayList<ImageView>();
+    	newDealerBookImageViewList = new ArrayList<ImageView>();
     	
     	// set visuals for player hand
     	// Get card images from GoFishGame (Model) for User Hand and display on screen
@@ -171,10 +183,39 @@ public class GoFishController {
     		goFishAnchorPane.getChildren().add(newUserImageViewList.get(i));
     	}
     	
+    	// set visuals for player books
+    	// Get card images from GoFishGame (Model) for User Books and display on screen
+    	// Start with left card and add book offset to that card
+    	if(goFishGame.getUserBooks() != null) { // if books exist
+	    	ArrayList<Image> userBookImages = goFishGame.getUserBooks();
+	    	userLeftBook.setImage(userBookImages.get(0));
+	
+	    	for (int i = 1; i < userBookImages.size(); i++) {
+	    		// Create new ImageView
+	    		ImageView newUserImageView = new ImageView();
+	    		// Set to same size as user left card
+	    		newUserImageView.setFitWidth(userLeftBook.getFitWidth());
+	    		newUserImageView.setFitHeight(userLeftBook.getFitHeight());
+	    		// Set the image to match the card
+	    		newUserImageView.setImage(userBookImages.get(i));
+	    		if (i == 1) { // First card in ArrayList starts position offsets off userLeftCard
+	        		newUserImageView.setLayoutX(userLeftBook.getLayoutX() + 20);
+	        		newUserImageView.setLayoutY(userLeftBook.getLayoutY());
+	    		} else { // All other cards are offset in X from the card before them
+	    			newUserImageView.setLayoutX(newUserBookImageViewList.get(i-2).getLayoutX() + 45);
+	    			newUserImageView.setLayoutY(userLeftBook.getLayoutY());
+	    		}
+	    		newUserBookImageViewList.add(newUserImageView);
+	    	}
+	    	// After all user cards are added, add them to the screen
+	    	for (int i = 0; i < newUserBookImageViewList.size(); i++) {
+	    		goFishAnchorPane.getChildren().add(newUserBookImageViewList.get(i));
+	    	}
+    	}
     	
     	// Set all cpu card visuals to back of card (grey with black border)
     	// Get card images from GoFishGame (Model) for CPU hand, set to back image, and display on screen
-    	// Start with left card and add hand offset to that card
+    	// Start with right card and add book offset to that card
     	ArrayList<Image> dealerCardHandImages = goFishGame.getDealerHand(false);
     	dealerLeftCard.setImage(dealerCardHandImages.get(0));
     	for (int i = 1; i < dealerCardHandImages.size(); i++) {
@@ -199,11 +240,36 @@ public class GoFishController {
     		goFishAnchorPane.getChildren().add(newDealerImageViewList.get(i));
     	}
     	
-    	
-    	// Initialize ArrayLists to hold completed user and cpu books
-    	userBooks = new ArrayList<ImageView>();
-    	cpuBooks = new ArrayList<ImageView>();
-    	
+    	// set visuals for dealer books
+    	// Get card images from GoFishGame (Model) for User Books and display on screen
+    	// Start with left card and add book offset to that card
+    	if(goFishGame.getCpuBooks() != null) { // if books exist
+	    	ArrayList<Image> dealerBookImages = goFishGame.getCpuBooks();
+	    	userLeftBook.setImage(dealerBookImages.get(0));
+	
+	    	for (int i = 1; i < dealerBookImages.size(); i++) {
+	    		// Create new ImageView
+	    		ImageView newDealerImageView = new ImageView();
+	    		// Set to same size as user left card
+	    		newDealerImageView.setFitWidth(userLeftBook.getFitWidth());
+	    		newDealerImageView.setFitHeight(userLeftBook.getFitHeight());
+	    		// Set the image to match the card
+	    		newDealerImageView.setImage(dealerBookImages.get(i));
+	    		if (i == 1) { // First card in ArrayList starts position offsets off userLeftCard
+	        		newDealerImageView.setLayoutX(userLeftBook.getLayoutX() - 20);
+	        		newDealerImageView.setLayoutY(userLeftBook.getLayoutY());
+	    		} else { // All other cards are offset in X from the card before them
+	    			newDealerImageView.setLayoutX(newUserBookImageViewList.get(i-2).getLayoutX() + 45);
+	    			newDealerImageView.setLayoutY(userLeftCard.getLayoutY());
+	    		}
+	    		newDealerBookImageViewList.add(newDealerImageView);
+	    	}
+	    	// After all user cards are added, add them to the screen
+	    	for (int i = 0; i < newDealerBookImageViewList.size(); i++) {
+	    		goFishAnchorPane.getChildren().add(newDealerBookImageViewList.get(i));
+	    	}
+    	}
+
 	}
     
     /**
@@ -226,6 +292,7 @@ public class GoFishController {
     	goFishGame = null;
     	this.initData(userName, screenMode);
     }
+
     
     public void updateView() {
     	initData(userName, screenMode);
