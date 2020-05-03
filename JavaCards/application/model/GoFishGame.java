@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.ArrayList;
 
+import application.model.BlackJackGame.GameStatus;
 import application.model.Card.CardRank;
 import application.model.Card.CardSuit;
 import application.model.Score.GameList;
@@ -27,7 +28,6 @@ public class GoFishGame {
 	private ArrayList<Card> deckOfCards;
 	private ArrayList<Card> userHand;
 	private ArrayList<Card> cpuHand;
-// TODO: change book from int to array list that stores a card of that rank
 	private ArrayList<Card> userBooks;
 	private ArrayList<Card> cpuBooks;
 	public int userScore;
@@ -144,10 +144,7 @@ public class GoFishGame {
 			removeBookFromHand(userHand, userBooks);
 			
 			// check if adding book has ended the game
-			if(userBooks.size() + cpuBooks.size() == 13) {
-				// TODO: write function to end the game and determine a winner
-				System.out.println("game has ended");
-			}
+			checkIfGameEnded();
 			
 			// check if removing the book has emptied user's hand
 			if(checkIfHandEmpty(userHand)) {
@@ -208,8 +205,7 @@ public class GoFishGame {
 		try {
 			System.out.println("size of cpuhand: " + cpuHand.size());
 			Card request = cpuHand.get(rand.nextInt(cpuHand.size()));
-			Alert alert = new Alert(AlertType.INFORMATION, "Got any " + request.rank + "s?", ButtonType.OK);
-			alert.showAndWait();
+			System.out.println("Cpu has asked for " + request.rank);
 			
 			if(cpuAskForCard(request) == false) {
 				if(checkIfDeckEmpty() == false)
@@ -223,10 +219,7 @@ public class GoFishGame {
 			removeBookFromHand(cpuHand, cpuBooks);
 			
 			// check if adding book has ended the game
-			if(userBooks.size() + cpuBooks.size() == 13) {
-				// TODO: write function to end the game and determine a winner
-				System.out.println("game has ended");
-			}
+			checkIfGameEnded();
 			
 			// check if removing the book has emptied user's hand
 			if(checkIfHandEmpty(cpuHand)) {
@@ -281,6 +274,29 @@ public class GoFishGame {
 	}
 	
 	/**
+	 * Checks if there are no cards left in a given hand.
+	 * @param hand, the ArrayList of Cards being checked for elements
+	 * @return true if empty and false if not
+	 */
+    public boolean checkIfHandEmpty(ArrayList<Card> hand) {
+    	if(hand.size() == 0)	
+    		return true;
+    	else
+    		return false;
+    }
+    
+    /**
+     * Checks if there are no cards left in the deck.
+     * @return true if empty and false if not
+     */
+    public boolean checkIfDeckEmpty() {
+    	if(deckOfCards.size() == 0)
+    		return true;
+    	else
+    		return false;
+    }
+    
+	/**
 	 * Checks to see if four cards of the same rank exist in a given deck.
 	 * @param hand, the hand that is being checked for Cards of the same rank.
 	 * @return true if a book is completed and false if not
@@ -304,33 +320,11 @@ public class GoFishGame {
 		
 	}
 	
-	/**
-	 * Checks if there are no cards left in a given hand.
-	 * @param hand, the ArrayList of Cards being checked for elements
-	 * @return true if empty and false if not
-	 */
-    public boolean checkIfHandEmpty(ArrayList<Card> hand) {
-    	if(hand.size() == 0)	
-    		return true;
-    	else
-    		return false;
-    }
-    
-    /**
-     * Checks if there are no cards left in the deck.
-     * @return true if empty and false if not
-     */
-    public boolean checkIfDeckEmpty() {
-    	if(deckOfCards.size() == 0)
-    		return true;
-    	else
-    		return false;
-    }
-    
     public void removeBookFromHand(ArrayList<Card> hand, ArrayList<Card> books) {
     	int count = 0;
 		// create a temp storage for cards that will be removed
 		ArrayList<Card> tempList = new ArrayList<Card>();
+		Card bookCard = null;
 		
 		// for each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) {
@@ -348,12 +342,44 @@ public class GoFishGame {
 						tempList.add(c2);
 					}
 				}
-				books.add(c1); // c1 will be referenced for the book graphic
+				bookCard = c1;
+				break;
 			}
 		}
+		System.out.println("Book made: " + bookCard.rank);
+		books.add(bookCard); // c1 will be referenced for the book graphic
+		
 		hand.removeAll(tempList);
 		hand.trimToSize();
     }
+    
+	/**
+	 * Called after every turn
+	 * Gets total for user books and dealer books, and checks to see if won
+	 * Exits with no return if game continues
+	 * TODO: change to return a GAMESTATUS to the controller?
+	 */
+	public void checkIfGameEnded() {
+		// Add together user and dealer books
+		// If total is 13, find out who won
+
+		int totalBooks = userBooks.size() + cpuBooks.size();
+
+		// Now compare totals
+		if (totalBooks == 13) {
+			// since game is over, see who won
+			if(userBooks.size() > cpuBooks.size()) {
+				userScore += 20;
+				score.addScore(GameList.GOFISH, userName, userScore);
+				// TODO: give victory message
+			}
+			else {
+				// TODO: give loss message
+			}
+		}
+
+		System.out.println("User Book Total: " + userBooks.size());
+	}
 	
 	/**
 	 * Returns user score
