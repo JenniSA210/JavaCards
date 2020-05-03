@@ -251,16 +251,16 @@ public class GoFishController {
 	    		// Create new ImageView
 	    		ImageView newDealerImageView = new ImageView();
 	    		// Set to same size as user left card
-	    		newDealerImageView.setFitWidth(userLeftBook.getFitWidth());
-	    		newDealerImageView.setFitHeight(userLeftBook.getFitHeight());
+	    		newDealerImageView.setFitWidth(dealerRightBook.getFitWidth());
+	    		newDealerImageView.setFitHeight(dealerRightBook.getFitHeight());
 	    		// Set the image to match the card
 	    		newDealerImageView.setImage(dealerBookImages.get(i));
 	    		if (i == 1) { // First card in ArrayList starts position offsets off userLeftCard
-	        		newDealerImageView.setLayoutX(userLeftBook.getLayoutX() - 20);
-	        		newDealerImageView.setLayoutY(userLeftBook.getLayoutY());
+	        		newDealerImageView.setLayoutX(dealerRightBook.getLayoutX() - 20);
+	        		newDealerImageView.setLayoutY(dealerRightBook.getLayoutY());
 	    		} else { // All other cards are offset in X from the card before them
-	    			newDealerImageView.setLayoutX(newUserBookImageViewList.get(i-2).getLayoutX() + 45);
-	    			newDealerImageView.setLayoutY(userLeftCard.getLayoutY());
+	    			newDealerImageView.setLayoutX(newDealerBookImageViewList.get(i-2).getLayoutX() + 45);
+	    			newDealerImageView.setLayoutY(dealerRightBook.getLayoutY());
 	    		}
 	    		newDealerBookImageViewList.add(newDealerImageView);
 	    	}
