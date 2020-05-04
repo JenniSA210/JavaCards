@@ -37,6 +37,14 @@ public class Card {
 		return image;
 	}
 	
+	/**
+	 * Gets rank of card
+	 * @return rank of card
+	 */
+	public CardRank getRank() {
+		return this.rank;
+	}
+	
 	@Override
 	/**
 	 * To String, will show similar to "ACE of SPADES"

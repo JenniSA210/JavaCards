@@ -60,12 +60,13 @@ public class GoFishGame {
 	 * Gets Images of all cards currently in User Hand
 	 * @return ArrayList of Card Images
 	 */
-	public ArrayList<Image> getUserHand(){
-		ArrayList<Image> userHandImages = new ArrayList<Image>();
+	public ArrayList<Card> getUserHand(){
+		//ArrayList<Image> userHandImages = new ArrayList<Image>();
 		for (int i = 0; i < userHand.size(); i++) {
-			userHandImages.add(userHand.get(i).image);
+			userHand.get(i).image.setToFrontImage();
+			//userHandImages.add(userHand.get(i).image);
 		}
-		return userHandImages;
+		return userHand;
 	}
 	
 	/**
@@ -112,6 +113,18 @@ public class GoFishGame {
 			cpuBookImages.add(cpuBooks.get(i).image);
 		}
 		return cpuBookImages;
+	}
+	
+	/**
+	 * Check if cpu has card in hand
+	 * @return true if cpu has card in hand
+	 */
+	public boolean cpuHasCard(CardRank rank) {
+		for (Card c: cpuHand) {
+			if (c.rank == rank)
+				return true;
+		}
+		return false;
 	}
 	
 	/**
