@@ -196,10 +196,10 @@ public class GoFishController {
     			alert.showAndWait();
     			if (userCardHand.size() > 0)
     				if (goFishGame.cpuHasCard(userCardHand.get(0).getRank())) {
-    					alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
+    					alert = new Alert(AlertType.INFORMATION, "CPU: Yes", ButtonType.OK);
     					alert.showAndWait();			    				
     				} else {
-    					alert = new Alert(AlertType.INFORMATION, userName + "CPU: Go Fish", ButtonType.OK);
+    					alert = new Alert(AlertType.INFORMATION, "CPU: Go Fish", ButtonType.OK);
     					alert.showAndWait();
     				}
 				updateView();
@@ -237,11 +237,11 @@ public class GoFishController {
 			    					userName + ": Do you have a " + userCardHand.get(k).getRank(), ButtonType.OK);
 			    			alert.showAndWait();
 			    			if (goFishGame.cpuHasCard(userCardHand.get(k).getRank())) {
-				    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
+				    			alert = new Alert(AlertType.INFORMATION, "CPU: Yes", ButtonType.OK);
 				    			alert.showAndWait();			    				
 			    			} else {
 				    			alert = new Alert(AlertType.INFORMATION, 
-				    			userName + "CPU: Go Fish", ButtonType.OK);
+				    			"CPU: Go Fish", ButtonType.OK);
 				    			alert.showAndWait();
 			    			}
 							goFishGame.userCardSelect(k);
