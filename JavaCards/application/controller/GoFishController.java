@@ -7,10 +7,7 @@ import java.util.ArrayList;
 
 import application.controller.JavaCardsController.ScreenModes;
 import application.model.GoFishGame;
-import application.model.BlackJackGame;
-import application.model.CardImage;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -27,7 +24,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import application.model.Card.CardRank;
 
 /**
  * Controler for Go Fish Game
@@ -40,9 +36,9 @@ public class GoFishController {
 	private ScreenModes screenMode = ScreenModes.DEFAULT; // Holds screen mode from main screen (JavaCards)
 	private GoFishGame goFishGame; // Data model for Go Fish Game
 	ArrayList<ImageView> newUserImageViewList; // Holds dynamically created card ImageViews for user hand
-	ArrayList<ImageView> newDealerImageViewList; // Holds dynamically created card ImageViews for cpu hand
+	ArrayList<ImageView> newCPUImageViewList; // Holds dynamically created card ImageViews for cpu hand
 	ArrayList<ImageView> newUserBookImageViewList; // Holds dynamically created card ImageViews for user hand
-	ArrayList<ImageView> newDealerBookImageViewList; // Holds dynamically created card ImageViews for cpu hand
+	ArrayList<ImageView> newCPUBookImageViewList; // Holds dynamically created card ImageViews for cpu hand
 	
     @FXML
     private AnchorPane goFishAnchorPane; // Main Pane
@@ -68,7 +64,7 @@ public class GoFishController {
 
     // CPU's starting card
     @FXML
-    private ImageView dealerLeftCard;
+    private ImageView cpuLeftCard;
     
     // User's starting book - stacks are offset to the right
     @FXML
@@ -76,9 +72,8 @@ public class GoFishController {
     
     // CPU's starting book - stacks are offset to the left
     @FXML
-    private ImageView dealerRightBook;
+    private ImageView cpuRightBook;
 
-    
     @FXML
     /**
      * Calls startNewGame() to reinitialize game and screen and re-enables all buttons
@@ -118,13 +113,70 @@ public class GoFishController {
     	// Sets high score label
     	highScoreLabel.setText("High Score: " + goFishGame.getHighScore());
 
+    	// Update screen based on current card
+    	updateView();
+	}
+    
+    /**
+     * Removes all additional ImageViews from screen, clears ArrayLists, and re-initialize for new game
+     */
+    public void startNewGame() {
+    	// Restart game from scratch
+    	goFishGame = null;
+    	this.initData(userName, screenMode);
+    }
+
+    /**
+     * Remove and clear all ImageViews and ArrayLists containing them
+     * Recreate screen using card data from GoFishGame
+     */
+    public void updateView() {
+    	// Remove and clear ImageViews, then clear ArrayLists
+    	if (newUserImageViewList != null) {
+    		for (int i = 0; i < newUserImageViewList.size(); i++)
+    			goFishAnchorPane.getChildren().remove(newUserImageViewList.get(i));
+    		newUserImageViewList.clear();
+    		newUserImageViewList = null;
+    	}
+
+    	// Remove New Cpu Card ImageViews from Anchor Pane and clear ArrayList
+    	if (newCPUImageViewList != null) {
+    		for (int i = 0; i < newCPUImageViewList.size(); i++)
+    			goFishAnchorPane.getChildren().remove(newCPUImageViewList.get(i));
+    		newCPUImageViewList.clear();
+    		newCPUImageViewList = null;
+    	}
+
+    	// Remove New User Books ImageViews from Anchor Pane and clear ArrayList
+    	if (newUserBookImageViewList != null) {
+    		for (int i = 0; i < newUserBookImageViewList.size(); i++)
+    			goFishAnchorPane.getChildren().remove(newUserBookImageViewList.get(i));
+    		newUserBookImageViewList.clear();
+    		newUserBookImageViewList = null;
+    	}
+
+    	// Remove New Cpu Books ImageViews from Anchor Pane and clear ArrayList
+    	if (newCPUBookImageViewList != null) {
+    		for (int i = 0; i < newCPUBookImageViewList.size(); i++)
+    			goFishAnchorPane.getChildren().remove(newCPUBookImageViewList.get(i));
+    		newCPUBookImageViewList.clear();
+    		newCPUBookImageViewList = null;
+    	}
+    	
+    	// Reset images on FXML Card Base ImageViews
+    	userLeftCard.setImage(null);
+        cpuLeftCard.setImage(null);
+        userLeftBook.setImage(null);
+        cpuRightBook.setImage(null);
+
+    	
     	// Initialize empty ArrayLists to hold user and cpu hands
     	newUserImageViewList = new ArrayList<ImageView>();
-    	newDealerImageViewList = new ArrayList<ImageView>();
+    	newCPUImageViewList = new ArrayList<ImageView>();
     	
     	// Initialize empty ArrayLists to hold user and cpu hands
     	newUserBookImageViewList = new ArrayList<ImageView>();
-    	newDealerBookImageViewList = new ArrayList<ImageView>();
+    	newCPUBookImageViewList = new ArrayList<ImageView>();
     	
     	// set visuals for player hand
     	// Get card images from GoFishGame (Model) for User Hand and display on screen
@@ -137,7 +189,8 @@ public class GoFishController {
 			public void handle(MouseEvent event) {
 				// Send index from User Card Images
 				goFishGame.userCardSelect(0);
-				System.out.println("User Card Clicked");
+				updateView();
+				//System.out.println("User Card Clicked");
 			}
 			
 		});
@@ -169,10 +222,10 @@ public class GoFishController {
 						if (iv.getImage() == userCardHandImages.get(k)) {
 							goFishGame.userCardSelect(k);
 							updateView(); // Cards shifted, so refresh view
-							System.out.println("Clicked image found");
+							//System.out.println("Clicked image found");
 						}
 					}
-					System.out.println("User Card Clicked");
+					//System.out.println("User Card Clicked");
 				}
     			
     		});
@@ -216,85 +269,72 @@ public class GoFishController {
     	// Set all cpu card visuals to back of card (grey with black border)
     	// Get card images from GoFishGame (Model) for CPU hand, set to back image, and display on screen
     	// Start with right card and add book offset to that card
-    	ArrayList<Image> dealerCardHandImages = goFishGame.getDealerHand(false);
-    	dealerLeftCard.setImage(dealerCardHandImages.get(0));
-    	for (int i = 1; i < dealerCardHandImages.size(); i++) {
+    	ArrayList<Image> cpuCardHandImages = goFishGame.getCPUHand(false);
+    	cpuLeftCard.setImage(cpuCardHandImages.get(0));
+    	for (int i = 1; i < cpuCardHandImages.size(); i++) {
     		// Create new ImageView
-    		ImageView newDealerImageView = new ImageView();
+    		ImageView newCPUImageView = new ImageView();
     		// Set to same size as dealer left card
-    		newDealerImageView.setFitWidth(dealerLeftCard.getFitWidth());
-    		newDealerImageView.setFitHeight(dealerLeftCard.getFitHeight());
+    		newCPUImageView.setFitWidth(cpuLeftCard.getFitWidth());
+    		newCPUImageView.setFitHeight(cpuLeftCard.getFitHeight());
     		// Set the image to match the card
-    		newDealerImageView.setImage(dealerCardHandImages.get(i));
+    		newCPUImageView.setImage(cpuCardHandImages.get(i));
     		if (i == 1) { // First card in ArrayList starts position offsets off dealerLeftCard
-    			newDealerImageView.setLayoutX(dealerLeftCard.getLayoutX() + 45);
-    			newDealerImageView.setLayoutY(dealerLeftCard.getLayoutY());
+    			newCPUImageView.setLayoutX(cpuLeftCard.getLayoutX() + 45);
+    			newCPUImageView.setLayoutY(cpuLeftCard.getLayoutY());
     		} else { // All other cards are offset in X from the card before them
-    			newDealerImageView.setLayoutX(newDealerImageViewList.get(i-2).getLayoutX() + 45);
-    			newDealerImageView.setLayoutY(dealerLeftCard.getLayoutY());
+    			newCPUImageView.setLayoutX(newCPUImageViewList.get(i-2).getLayoutX() + 45);
+    			newCPUImageView.setLayoutY(cpuLeftCard.getLayoutY());
     		}
-    		newDealerImageViewList.add(newDealerImageView);
+    		newCPUImageViewList.add(newCPUImageView);
     	}
-    	// After all dealer cards are added, add them to the screen
-    	for (int i = 0; i < newDealerImageViewList.size(); i++) {
-    		goFishAnchorPane.getChildren().add(newDealerImageViewList.get(i));
+    	// After all cpu cards are added, add them to the screen
+    	for (int i = 0; i < newCPUImageViewList.size(); i++) {
+    		goFishAnchorPane.getChildren().add(newCPUImageViewList.get(i));
     	}
     	
-    	// set visuals for dealer books
-    	// Get card images from GoFishGame (Model) for User Books and display on screen
+    	// set visuals for cpu books
+    	// Get card images from GoFishGame (Model) for CPU Books and display on screen
     	// Start with left card and add book offset to that card
     	if(goFishGame.getCpuBooks() != null) { // if books exist
-	    	ArrayList<Image> dealerBookImages = goFishGame.getCpuBooks();
-	    	userLeftBook.setImage(dealerBookImages.get(0));
-	
-	    	for (int i = 1; i < dealerBookImages.size(); i++) {
+	    	ArrayList<Image> cpuBookImages = goFishGame.getCpuBooks();
+	    	cpuRightBook.setImage(cpuBookImages.get(0));
+
+	    	for (int i = 1; i < cpuBookImages.size(); i++) {
 	    		// Create new ImageView
-	    		ImageView newDealerImageView = new ImageView();
+	    		ImageView newCPUImageView = new ImageView();
 	    		// Set to same size as user left card
-	    		newDealerImageView.setFitWidth(dealerRightBook.getFitWidth());
-	    		newDealerImageView.setFitHeight(dealerRightBook.getFitHeight());
+	    		newCPUImageView.setFitWidth(cpuRightBook.getFitWidth());
+	    		newCPUImageView.setFitHeight(cpuRightBook.getFitHeight());
 	    		// Set the image to match the card
-	    		newDealerImageView.setImage(dealerBookImages.get(i));
+	    		newCPUImageView.setImage(cpuBookImages.get(i));
 	    		if (i == 1) { // First card in ArrayList starts position offsets off userLeftCard
-	        		newDealerImageView.setLayoutX(dealerRightBook.getLayoutX() - 20);
-	        		newDealerImageView.setLayoutY(dealerRightBook.getLayoutY());
+	        		newCPUImageView.setLayoutX(cpuRightBook.getLayoutX() - 20);
+	        		newCPUImageView.setLayoutY(cpuRightBook.getLayoutY());
 	    		} else { // All other cards are offset in X from the card before them
-	    			newDealerImageView.setLayoutX(newDealerBookImageViewList.get(i-2).getLayoutX() + 45);
-	    			newDealerImageView.setLayoutY(dealerRightBook.getLayoutY());
+	    			newCPUImageView.setLayoutX(newCPUBookImageViewList.get(i-2).getLayoutX() + 45);
+	    			newCPUImageView.setLayoutY(cpuRightBook.getLayoutY());
 	    		}
-	    		newDealerBookImageViewList.add(newDealerImageView);
+	    		newCPUBookImageViewList.add(newCPUImageView);
 	    	}
-	    	// After all user cards are added, add them to the screen
-	    	for (int i = 0; i < newDealerBookImageViewList.size(); i++) {
-	    		goFishAnchorPane.getChildren().add(newDealerBookImageViewList.get(i));
+
+	    	// After all cpu book cards are added, add them to the screen
+	    	for (int i = 0; i < newCPUBookImageViewList.size(); i++) {
+	    		goFishAnchorPane.getChildren().add(newCPUBookImageViewList.get(i));
+
 	    	}
+
     	}
-
-	}
-    
-    /**
-     * Removes all additional ImageViews from screen, clears ArrayLists, and re-initialize for new game
-     */
-    public void startNewGame() {
-    	// Remove New User Card ImageViews from Anchor Pane and clear ArrayList
-    	for (int i = 0; i < newUserImageViewList.size(); i++)
-        	goFishAnchorPane.getChildren().remove(newUserImageViewList.get(i));
-   		newUserImageViewList.clear();
-    	newUserImageViewList = null;
-
-    	// Remove New Cpu Card ImageViews from Anchor Pane and clear ArrayList
-    	for (int i = 0; i < newDealerImageViewList.size(); i++)
-        	goFishAnchorPane.getChildren().remove(newDealerImageViewList.get(i));
-    	newDealerImageViewList.clear();
-    	newDealerImageViewList = null;
-    	
-    	// Restart game from scratch
-    	goFishGame = null;
-    	this.initData(userName, screenMode);
-    }
-
-    
-    public void updateView() {
-    	initData(userName, screenMode);
+    	if (goFishGame.checkIfGameEnded()) {
+    		if (goFishGame.didUserWin()) {
+    			// Display User Won Alert
+    			Alert alert = new Alert(AlertType.INFORMATION, "You won!", ButtonType.OK);
+    			alert.showAndWait();
+    		} else {
+    			// Display CPU Won Alert
+    			Alert alert = new Alert(AlertType.INFORMATION, "CPU won!", ButtonType.OK);
+    			alert.showAndWait();
+    		}
+    	}
     }
 }
