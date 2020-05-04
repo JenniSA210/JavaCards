@@ -183,7 +183,8 @@ public class GoFishController {
     	// Get card images from GoFishGame (Model) for User Hand and display on screen
     	// Start with left card and add hand offset to that card
     	ArrayList<Card> userCardHand = goFishGame.getUserHand();
-    	userLeftCard.setImage(userCardHand.get(0).getImage());
+    	if (userCardHand.size() != 0)
+    		userLeftCard.setImage(userCardHand.get(0).getImage());
     	// Set listener to match other cards, description below
     	userLeftCard.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -193,13 +194,14 @@ public class GoFishController {
     					userName + ": Do you have a " + userCardHand.get(0).getRank(), ButtonType.OK);
 				goFishGame.userCardSelect(0);
     			alert.showAndWait();
-    			if (goFishGame.cpuHasCard(userCardHand.get(0).getRank())) {
-	    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
-	    			alert.showAndWait();			    				
-    			} else {
-	    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Go Fish", ButtonType.OK);
-	    			alert.showAndWait();
-    			}
+    			if (userCardHand.size() > 0)
+    				if (goFishGame.cpuHasCard(userCardHand.get(0).getRank())) {
+    					alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
+    					alert.showAndWait();			    				
+    				} else {
+    					alert = new Alert(AlertType.INFORMATION, userName + "CPU: Go Fish", ButtonType.OK);
+    					alert.showAndWait();
+    				}
 				updateView();
 				//System.out.println("User Card Clicked");
 			}
@@ -292,7 +294,8 @@ public class GoFishController {
     	// Get card images from GoFishGame (Model) for CPU hand, set to back image, and display on screen
     	// Start with right card and add book offset to that card
     	ArrayList<Image> cpuCardHandImages = goFishGame.getCPUHand(false);
-    	cpuLeftCard.setImage(cpuCardHandImages.get(0));
+    	if (cpuCardHandImages.size() != 0)
+    		cpuLeftCard.setImage(cpuCardHandImages.get(0));
     	for (int i = 1; i < cpuCardHandImages.size(); i++) {
     		// Create new ImageView
     		ImageView newCPUImageView = new ImageView();
