@@ -6,6 +6,7 @@ package application.controller;
 import java.util.ArrayList;
 
 import application.controller.JavaCardsController.ScreenModes;
+import application.model.Card;
 import application.model.GoFishGame;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -181,27 +182,37 @@ public class GoFishController {
     	// set visuals for player hand
     	// Get card images from GoFishGame (Model) for User Hand and display on screen
     	// Start with left card and add hand offset to that card
-    	ArrayList<Image> userCardHandImages = goFishGame.getUserHand();
-    	userLeftCard.setImage(userCardHandImages.get(0));
+    	ArrayList<Card> userCardHand = goFishGame.getUserHand();
+    	userLeftCard.setImage(userCardHand.get(0).getImage());
     	// Set listener to match other cards, description below
     	userLeftCard.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				// Send index from User Card Images
+    			Alert alert = new Alert(AlertType.INFORMATION, 
+    					userName + ": Do you have a " + userCardHand.get(0).getRank(), ButtonType.OK);
 				goFishGame.userCardSelect(0);
+    			alert.showAndWait();
+    			if (goFishGame.cpuHasCard(userCardHand.get(0).getRank())) {
+	    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
+	    			alert.showAndWait();			    				
+    			} else {
+	    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Go Fish", ButtonType.OK);
+	    			alert.showAndWait();
+    			}
 				updateView();
 				//System.out.println("User Card Clicked");
 			}
 			
 		});
-    	for (int i = 1; i < userCardHandImages.size(); i++) {
+    	for (int i = 1; i < userCardHand.size(); i++) {
     		// Create new ImageView
     		ImageView newUserImageView = new ImageView();
     		// Set to same size as user left card
     		newUserImageView.setFitWidth(userLeftCard.getFitWidth());
     		newUserImageView.setFitHeight(userLeftCard.getFitHeight());
     		// Set the image to match the card
-    		newUserImageView.setImage(userCardHandImages.get(i));
+    		newUserImageView.setImage(userCardHand.get(i).getImage());
     		if (i == 1) { // First card in ArrayList starts position offsets off userLeftCard
         		newUserImageView.setLayoutX(userLeftCard.getLayoutX() + 45);
         		newUserImageView.setLayoutY(userLeftCard.getLayoutY());
@@ -218,8 +229,19 @@ public class GoFishController {
 				public void handle(MouseEvent event) {
 					// Send index from User Card Images
 					ImageView iv = (ImageView) event.getTarget();
-					for (int k = 0; k < userCardHandImages.size(); k++) {
-						if (iv.getImage() == userCardHandImages.get(k)) {
+					for (int k = 0; k < userCardHand.size(); k++) {
+						if (iv.getImage() == userCardHand.get(k).getImage()) {
+			    			Alert alert = new Alert(AlertType.INFORMATION, 
+			    					userName + ": Do you have a " + userCardHand.get(k).getRank(), ButtonType.OK);
+			    			alert.showAndWait();
+			    			if (goFishGame.cpuHasCard(userCardHand.get(k).getRank())) {
+				    			alert = new Alert(AlertType.INFORMATION, userName + "CPU: Yes", ButtonType.OK);
+				    			alert.showAndWait();			    				
+			    			} else {
+				    			alert = new Alert(AlertType.INFORMATION, 
+				    			userName + "CPU: Go Fish", ButtonType.OK);
+				    			alert.showAndWait();
+			    			}
 							goFishGame.userCardSelect(k);
 							updateView(); // Cards shifted, so refresh view
 							//System.out.println("Clicked image found");
