@@ -79,7 +79,7 @@ public class GoFishGame {
 			return null;
 		ArrayList<Image> userBookImages = new ArrayList<Image>();
 		for(int i = 0; i < userBooks.size(); i++) {
-			cpuHand.get(i).image.setToFrontImage();
+			userBooks.get(i).image.setToFrontImage();
 			userBookImages.add(userBooks.get(i).image);
 		}
 		return userBookImages;
@@ -247,20 +247,23 @@ public class GoFishGame {
 		} catch(IllegalArgumentException e) {
 			System.out.println("Error caught in CPU turn");
 		}
-		
-		// Check if book completed 
-		if(isBookCompleted(cpuHand)) {
-			removeBookFromHand(cpuHand, cpuBooks);
+
+		// Repeat below steps to make sure that card added after removing book doesn't create a new book
+		do {
+			// Check if book completed 
+			if(isBookCompleted(cpuHand)) {
+				removeBookFromHand(cpuHand, cpuBooks);
 			
-			// Check if adding book has ended the game (all card into 13 books)
-			checkIfGameEnded();
+				// Check if adding book has ended the game (all card into 13 books)
+				checkIfGameEnded();
 			
-			// Check if removing the book has emptied user's hand
-			if(checkIfHandEmpty(cpuHand)) {
-				if(!isDeckEmpty())
-					cpuHand.add(deckOfCards.remove(0));
+				// Check if removing the book has emptied user's hand
+				if(checkIfHandEmpty(cpuHand)) {
+					if(!isDeckEmpty())
+						cpuHand.add(deckOfCards.remove(0));
+				}
 			}
-		}
+		} while (isBookCompleted(cpuHand));
 		
 		// Check if removing cards has emptied user's hand
 		if(checkIfHandEmpty(userHand)) {
@@ -341,7 +344,7 @@ public class GoFishGame {
 	
 		// For each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) { // Gets each card in deck
-			count = 1;
+			count = 0; // Set to 0 because for c2 for loop will count c1 in count
 			for(Card c2 : hand) {
 				if(c1.rank == c2.rank) { // And compares to other cards in deck
 					count++;			 // If matches add to count
@@ -367,7 +370,7 @@ public class GoFishGame {
 		
 		// For each card in the hand, see how many other cards have the same rank
 		for(Card c1 : hand) { // Sets to card in hand
-			count = 1;
+			count = 0; // Count is 0 because next for loop will include c1 in count
 			for(Card c2 : hand) {
 				if(c1.rank == c2.rank) { // And compares to other cards in deck
 					count++;
